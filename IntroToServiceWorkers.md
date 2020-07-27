@@ -32,4 +32,13 @@ Service workers are not golden hammer's (they can't be used to address every pro
 
 ## Why would I want to use a service worker? 
 
-Service worker's are great for refreshing and caching information for use offline (think of hiking applications downloading trails), 
+* Service worker's are great for refreshing and caching information for use offline (think of hiking applications downloading trails)
+* Defer actions requested while offline (sending an email, rating a trail, saving a song to a playlist) for when connectivity to the application server is re-established. 
+* Download and store sets of information for access offline (offline trails, offline sounds, etc.)
+* Offline push-notifications (typically for mobile devices) 
+
+# The Service Worker Lifecycle 
+
+1. **Register** your service worker
+2. call the **install** event 
+3. **activate** the service worker 
