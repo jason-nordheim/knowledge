@@ -126,6 +126,82 @@ const currentValue = selectCounterValue(store.getState())
 console.log(currentValue) // => 2
 ```
 
+### Slices 
+
+A `slice` is a collection of Redux logic and actions for a single feature of an application. Conventionally, these are defined _together_ within a single file. The name comes from splitting up the root Redux state object into multiple "slices" of state.
+
+So for example, a blog might define and setup slices for users, posts, ands comments like so; 
+
+```js
+import { configureStore } from '@reduxjs/toolkit'
+import usersReducer from '../features/users/usersSlice'
+import postsReducer from '../features/posts/postsSlice'
+import commentsReducer from '../features/comments/commentsSlice'
+
+export default configureStore({
+  reducer: {
+    users: usersReducer,
+    posts: postsReducer,
+    comments: commentsReducer
+  }
+})
+``` 
+
+In that example, s`tate.users`, `state.posts`, and `state.comments` are each a separate "slice" of the Redux state. Since `usersReducer` is responsible for updating the `state.users` slice, we refer to it as a "slice reducer" function.
+
+Switching gears to the classic "counter" example... There are three manditory attributes required by the `createSlice` function: 
+
+1. a `name` property
+2. an `initialState` property 
+3. a `reducer` property 
+
+The `name` attribute, which is used as the first part of each `action` type, and the `key` name of each `reducer` function is used as the second part. So, the "counter" name + the "increment" reducer function generated an action type of `{type: "counter/increment"}`. (After all, why write this by hand if the computer can do it for us!)
+
+```js
+// 
+import { createSlice } from '@reduxjs/toolkit'
+
+export const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    increment: state => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1
+    },
+    decrement: state => {
+      state.value -= 1
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload
+    }
+  }
+})
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions
+
+export default counterSlice.reducer
+// example from: https://redux.js.org/tutorials/essentials/part-2-app-structure
+```
+The example above demonstrates three `action`s related to the `counter` `slice`...
+  1. `{type: "counter/increment"}`
+  2. `{type: "counter/decrement"}` 
+  3. `{type: "counter/incrementByAmount"}` 
+
+> Since actions are technically just objects with a `type` attribute, which is always a string, there is no technical reason that we can't create those "in-line" every-time, but that would be tedious. By creating a `slice` the Redux toolkit generates `action` type strings, creator functions, and action objects. All you have to do is define a `name` for this slice, write an object that _has some reducer functions in it_, and it **generates the corresponding action code automatically**.
+
+We can invoke those actions by taking the `slice`, and accessing the `actions` property and then invoking the `increment`/`decrement` or `incrementByAmount`. 
+
+```js
+console.log(counterSlice.actions.increment()) // {type: "counter/increment"}
+```
+
+
 ## Walking through (step-by-step) the Redux flow 
 
 ### Initial Setup 
@@ -151,3 +227,44 @@ To generate a React application with Redux for state management, you can leverag
 ```sh 
 npx create-react-app redux-essentials-example --template redux
 ```
+
+This will generate a template with the following structure: 
+
+```
+- `/src`
+  - `index.js` - entry point for the application 
+  - `App.js` - top level React component 
+  - `/app`
+    - `store.js` - creates the redux store instance 
+  - `/features` 
+    - `/counter`
+      - `counter.js` - Redux component that shows the UI for the counter 
+      - `counterSlice.js` - the redux logic for the counter feature 
+```
+
+### Configuring Redux Store's 
+
+Let's dive a bit deeper... Looking at the `app/store.js`: 
+```js
+// app/store.js 
+import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from '../features/counter/counterSlice'
+
+export default configureStore({
+  reducer: {
+    counter: counterReducer
+  }
+})
+```
+Here (in `store.js`) we can see that... 
+1. We are importing the `configureStore` function from the `@reduxjs/toolkit` 
+2. We are then importing the `counterReducer` from `../features/counter/counterSlice`, which is our `reducer` function (the function that recieves `state` and `action` objects, and then determines how to update the state based on the provided `state` and `action`). This is being passed in as an attribute (`reducer`) of a JS object - this tells the `configureStore` function how to manage `state` for the "counter" feature. 
+  > It is not uncommon for applications to be composed of a variety of features, and each of those features may require its own reducer function. When `configureStore` is called, we can pass in all of the different `reducer` functions in an object. The key names of that object will define the keys of our final state. 
+3. Passing in an object like `{counter: counterReducer}`, that says that we want to have a `state.counter` section of our Redux state object, and that we want the `counterReducer` function to be in charge of deciding if and how to update the `state.counter` section whenever an action is dispatched.
+> Redux allows store setup to be customized with different kinds of plugins ("middleware" and "enhancers"). configureStore automatically adds several middleware to the store setup by default to provide a good developer experience, and also sets up the store so that the Redux DevTools Extension can inspect its contents.
+
+
+
+
+
+
