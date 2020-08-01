@@ -200,6 +200,34 @@ We can invoke those actions by taking the `slice`, and accessing the `actions` p
 ```js
 console.log(counterSlice.actions.increment()) // {type: "counter/increment"}
 ```
+> `createSlice` uses a library called `Immer` inside. `Immer` uses a special JS tool called a Proxy to wrap the data you provide, and lets you write code that "mutates" that wrapped data. But, `Immer` tracks all the changes you've tried to make, and then uses that list of changes to return a safely immutably updated value, as if you'd written all the immutable update logic by hand.
+
+So instead of...
+```js
+function handwrittenReducer(state, action) {
+  return {
+    ...state,
+    first: {
+      ...state.first,
+      second: {
+        ...state.first.second,
+        [action.someId]: {
+          ...state.first.second[action.someId],
+          fourth: action.someValue
+        }
+      }
+    }
+  }
+}
+```
+We have: 
+```js
+function reducerWithImmer(state, action) {
+  state.first.second[action.someId].fourth = action.someValue
+}
+```
+> You can only write "mutating" logic in Redux Toolkit's createSlice and createReducer because they use Immer inside! If you write mutating logic in reducers without Immer, it will mutate the state and cause bugs!
+
 
 
 ## Walking through (step-by-step) the Redux flow 
@@ -261,10 +289,144 @@ Here (in `store.js`) we can see that...
 2. We are then importing the `counterReducer` from `../features/counter/counterSlice`, which is our `reducer` function (the function that recieves `state` and `action` objects, and then determines how to update the state based on the provided `state` and `action`). This is being passed in as an attribute (`reducer`) of a JS object - this tells the `configureStore` function how to manage `state` for the "counter" feature. 
   > It is not uncommon for applications to be composed of a variety of features, and each of those features may require its own reducer function. When `configureStore` is called, we can pass in all of the different `reducer` functions in an object. The key names of that object will define the keys of our final state. 
 3. Passing in an object like `{counter: counterReducer}`, that says that we want to have a `state.counter` section of our Redux state object, and that we want the `counterReducer` function to be in charge of deciding if and how to update the `state.counter` section whenever an action is dispatched.
-> Redux allows store setup to be customized with different kinds of plugins ("middleware" and "enhancers"). configureStore automatically adds several middleware to the store setup by default to provide a good developer experience, and also sets up the store so that the Redux DevTools Extension can inspect its contents.
+  > Redux allows store setup to be customized with different kinds of plugins ("middleware" and "enhancers"). configureStore automatically adds several middleware to the store setup by default to provide a good developer experience, and also sets up the store so that the Redux DevTools Extension can inspect its contents.
 
 
+## Asynchronous logic & Thunks 
+
+All of the above practices and instructions above are in reference to _synchronous_ logic; 
+
+  1. `action`s are passed to the `dispatch` function 
+  2. the `dispatch` function passes those actions and current state to the related store's `reducer` function 
+  3. the `reducer` function evaluates changes to state based on the provided `state` and `action`, and returns the new state to the store. 
+  4. the `store` then updates the related state and notifies related components. 
+
+... but modern applications make extensive use of _asynchronous_ logic (fetching data from an API, processing large data sets, etc.). 
+
+In order to execute _asynchronous_ code with Redux, we need to use something called "**thunks**" 
+
+> A `thunk` is a specific kind of Redux function that can contain asynchronous logic. Thunks are written using two functions:
+  > 1. An inside thunk function, which gets `dispatch` and `getState` as arguments
+  > 2. The outside creator function, which creates and returns the thunk function
+
+Let's review an example: 
+
+```js
+// The function below is called a thunk and allows us to perform async logic.
+// It can be dispatched like a regular action: `dispatch(incrementAsync(10))`.
+// This will call the thunk with the `dispatch` function as the first argument.
+// Async code can then be executed and other actions can be dispatched
+export const incrementAsync = amount => dispatch => {
+  setTimeout(() => {
+    dispatch(incrementByAmount(amount))
+  }, 1000)
+}
+// src: https://redux.js.org/tutorials/essentials/part-2-app-structure 
+```
+
+This way, we can use the _asynchronous_ logic in the same way we executed _synchronous_ logic: 
+```js
+store.dispatch(incrementAsync(5))
+```
+**Important**: Using **thunks** requires that the `redux-thunk` middleware (a type of plugin for Redux) be added to the Redux store when it's created (Redux Toolkit's configureStore function already sets that up for us automatically, so we can go ahead and use **thunks** here). 
+
+When you need to make AJAX calls to fetch data from the server, you can put that call in a **thunk**. Here's an example that's written a bit longer, so you can see how it's defined:
+
+```js
+// the outside "thunk creator" function
+const fetchUserById = userId => {
+  // the inside "thunk function"
+  return async (dispatch, getState) => {
+    try {
+      // make an async call in the thunk
+      const user = await userAPI.fetchById(userId)
+      // dispatch an action when we get the response back
+      dispatch(userLoaded(user))
+    } catch (err) {
+      // If something went wrong, handle it here
+    }
+  }
+}
+```
 
 
+## Redux Hooks 
+
+### Reading data with `useSelector` 
+
+The `useSelector` hook lets our component extract whatever pieces of data it needs from the Redux store state. Essentially a "selector" function takes `state` as an argument and returns some part of that `state`. 
+
+```js
+// The function below is called a selector and allows us to select a value from
+// the state. Selectors can also be defined inline where they're used instead of
+// in the slice file. For example: `useSelector((state) => state.counter.value)`
+export const selectCount = state => state.counter.value
+
+// alternatively, we could access state with the `store.getState()` function
+const count = selectCount(store.getState())
+console.log(count) // =>  0
+```
+
+Components **cannot** talk to the Redux store directly (you it isn't possibnle with React to import it into component files) but, `useSelector` takes care of talking to the Redux store behind the scenes for us. When passed a "selector function" - `useSelector` invokes `someSelector(store.getState())` 
+
+So to retrieve the current value: 
+```js
+const count = useSelector(selectCount)
+```
+Any time an action has been dispatched and the Redux store has been updated, useSelector will re-run our selector function. If the selector returns a different value than last time, `useSelector` will make sure the related component re-renders with the new value.
+
+### Dispatching actions with `useDispatch` 
+
+Similarly, we know that if we had access to a Redux store, we could `dispatch` "actions" using "action creators", like `store.dispatch(increment())`. Alternatively, since we don't have access to the store itself, we may need some way to have access to just the dispatch method. The `useDispatch` hook does that for us, and gives us the actual dispatch method from the Redux store:
+
+```js
+const dispatch = useDispatch()
+```
+From there, we can dispatch actions when the user does something like clicking on a button:
+
+```js
+<button
+  className={styles.button}
+  aria-label="Increment value"
+  onClick={() => dispatch(increment())}
+>
+  +
+</button>
+```
+
+## Setup 
+ 
+In order to use the `useDispatch` and `useSelector` hooks, we need to setup the Redux store. Typically this is done at the top-level component of the application. We do this by; 
+1. Wrapping our `<App />` component in a `<Provider></Provider>` component. 
+2. Importing the `store` (already created with a reducer function) 
+3. And passing in the store: `<Provider store={store}>`.
+
+```js
+// index.js 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import store from './app/store'
+import { Provider } from 'react-redux'
+import * as serviceWorker from './serviceWorker'
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+Now, any React components that call `useSelector` or `useDispatch` will be talking to the Redux store we gave to the `<Provider>`.
 
 
+## Determing if data should go into Redux or local Component state
+
+Some good questions to ask yourself are: 
+* Do other parts of the application care about this data?
+* Do you need to be able to create further derived data based on this original data?
+* Is the same data being used to drive multiple components?
+* Is there value to you in being able to restore this state to a given point in time (ie, time travel debugging)?
+* Do you want to cache the data (ie, use what's in state if it's already there instead of re-requesting it)?
+* Do you want to keep this data consistent while hot-reloading UI components (which may lose their internal state when swapped)?
