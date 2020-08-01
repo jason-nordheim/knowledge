@@ -143,3 +143,11 @@ console.log(currentValue) // => 2
 
 ![Sequence Diagram](https://redux.js.org/img/tutorials/essentials/ReduxDataFlowDiagram.gif)
 
+
+## Template Generation (with React) 
+
+To generate a React application with Redux for state management, you can leverage the standard `create-react-app` command, but add the `--tempalte Redux` switch: 
+
+```sh 
+npx create-react-app redux-essentials-example --template redux
+```
