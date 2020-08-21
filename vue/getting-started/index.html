@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <link rel="stylesheeet" href="index.css">
+        <!-- Import the view framework via CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <title>Getting started with Vue</title>
+    </head>
+    <body>
+
+        <h1>The Basics</h1> 
+
+        <!-- The Basics -->
+        <!-- ============================================================ -->
+        <!-- we will use this ID to set the root element for Vue.js -->
+        <!-- We use double curly brace syntax to reference information contained in the 'data' element of the Vue , this is called a "template literal" -->
+        <div id="app_01">
+            {{ message }}
+        </div>
+
+        <hr /> 
+
+        <h1>Directives </h1>
+        <!-- Directives -->
+        <!-- ============================================================ -->
+        
+        <h2>Attribute Binding</h2>
+        <!-- Atribute Binding -->
+        <!-- `v-` indicates a directive -->
+        <!--  Directives allow for "binding" of JavaScript code to HTML attributes -->
+        <div id="app_02">
+            <span v-bind:title="message">
+                Hover your mouse over this text for a few seconds to see when you loaded the page. 
+            </span>
+        </div>
+
+        <h2>Looping through collections</h2>
+
+        <!-- Looping -->
+        <!-- ============================================================ -->
+        <div id="app_03">
+            <span>Basic To do list</span>
+            <ul>
+                <li v-for="todo in todos">
+                    {{ todo.text }}
+                </li>
+            </ul>
+        </div>
+
+        <!-- A more real-world example -->
+        <div id="app_04">
+            <span>Leveling up the todo list</span>
+            <ul>
+                <span v-for="todo in todos">
+                    <li>{{todo.text}}<input type="checkbox" v-bind:checked="todo.checked" aria-label="todo.text"/> </li>
+                </span>
+            </ul>
+        </div>
+
+        
+        <h2>Conditional Rendering</h2>
+        <!-- Conditional Rendering -->
+        <!-- ============================================================ -->
+        <!-- To render an HTML element conditionally, we use `v-if` -->
+        <div id="app_05">
+            <span v-if="seen">Now you see me</span>
+            <span v-if="unseen">Now you don't</span>
+        </div>
+
+
+
+        <!-- Link to associated View/Vue -->
+        <script src="index.js"></script>
+    </body>
+</html>
