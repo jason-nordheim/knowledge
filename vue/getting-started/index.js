@@ -32,6 +32,8 @@ var app_03 = new Vue({
             ], 
         }
     })
+
+    
 var app_04 = new Vue({
     el: '#app_04', 
     data: {
