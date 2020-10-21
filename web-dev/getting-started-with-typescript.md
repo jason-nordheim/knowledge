@@ -55,10 +55,10 @@ In short, Weakly typed langauges benefit from:
 
 While, strongly typed langauges benefit from: 
 * Implicit documentation 
-* Fewer errors at runtime 
+* Fewer errors at runtime via strong typing 
 * Increased performance through optimization (sometimes)
 
-> And **in my opinion** strongly typed langauges make it easier to work with third-party libraries 
+> And **in my opinion** strongly typed langauges make it easier to work with third-party libraries by enabling in-line documentation of TypeScript code. 
 
 ## Enter TypeScript 
 
@@ -262,7 +262,7 @@ In this way, we can ensure that all variables of that type have certain base att
 
 
 
-### Typing Functions 
+### Types and Functions 
 
 In addition to defining types and interfaces for variables, TypeScript enables (and encourages) defining types for functions in terms of both parameters and return values. 
 
@@ -280,6 +280,129 @@ function pow(x:number, y:number):number {
 }
 ```
 
-By defining the parameters and return values of functions, TypeScript can catch invalid/unexpected inputs to functions as well as invalid or unexpected outputs from functions. Additionally, this enables in-line documentation to any other developers using the code right out of the box. 
+If you have a function that does **not** return a value, (event listeners, side-effects, etc.), you can specify the return type as `void`. 
 
-If you have a function that does not return anything (event listeners, side-effects, etc.)
+```ts 
+/* Example of a functiont that does not return any value */
+function handleClick(event:React.MouseEvent):void {
+  // ... execute event handler 
+}
+
+```
+
+By defining the parameters and return values of functions, TypeScript can:
+* validate parameters to functions are of the correct type 
+* validate the return value of a function
+
+And possibly more important for the maintainability of a project; since the parameters and return values are declared; TypeScript code is _almost_ self-documenting when combined with good naming conventions. 
+
+
+### Strongly typed data structures
+
+Arrays declared in TypeScript _without_ a type annotation work exactly as they would in JavaScript - in other word's it doesn't matter the data type of the each element within the array; the first element in the array could be a `string`, the second could be a `number` and the third a `boolean`.... And that would be totally valid. 
+
+```ts 
+/* declaring an array without a type will essentially "opt out" of 
+ * the safe-gaurds provided by TypeScript */ 
+const arr = [] 
+
+/* So we can add elements to the array of any type */
+arr.push(1) 
+arr.push('Susan')
+arr.push(false)
+```
+
+While this makes working with arrays very flexible; as a developer writing a function in TypeScript using arrays without a type annotation means that we have no way of insuring that every element in the array is of the same type. 
+
+By declaring the array as strongly typed, the we can be sure at compile time that every element we add to that array aheres to the type declaration. In the event that a call is made to add an element to the strongly typed array that does not adhere to the type definition will result in an error being thrown. And best of all; this will be thrown at compile time. 
+
+Adding typing is the same as it is with variables. First declare the name of the array variable, then a colon (`:`) followed by the `type` or `interface` and terminated with opening and closing brackets (`[]`) to indicate that it is an array where every element in the array adheres to the `type` or `interface` defined.   
+
+```ts 
+/* strongly typed array of numbers */
+const arr: number[] = []`
+```
+
+With strongly typed arrays, IDE's like visual studio will be able to auto-complete property calls to elements in the array (assuming they are not a primitive data type). This can be useful when working with complex or irregular objects as well as increasing performance through optimization (in some cases). 
+
+```ts
+/* declare an interface */
+interface Person = {
+  first: string 
+  last: string 
+  age: number
+}
+
+/* every element within the array must adhere to 
+ * the rules defined in the interface or type annotated, 
+ * in this case: the person interface */
+const people:Person[]; 
+
+people.push({ first: 'Barack', last: 'Obama', age: 59}) // valid 
+people.push({ first: 'Steve', last: 'Jobs' }) // throws an error 
+```
+
+
+#### Tuples 
+
+TypeScript builds on this strong typing of arrays by enabling definition of a "tuple", which (in TypeScript) is a strongly typed, fixed length array. 
+
+```ts 
+/* declare a tuple that has 3 elements, 
+ * the first being a number, 
+ * the second being a string
+ * and the thirds being a boolean */
+type Contestant = [number, string, boolean ]
+```
+
+To create a tuple of this type we annotate the variable with the type `:Contestant`: 
+
+```ts 
+/* Custom Type */
+type Contestant = [number, string, boolean ]
+
+/* Create Tuple from Type */
+const competitors: Contestant = [24, 'Tony Robbins', false] 
+```
+
+> Note: with the `type` definition above, we cannot initialize a variable of type `Contestant` to an empty array (`[]`), rather it must be declared with elements matching the types/interfaces declared by the tuple's `type`
+
+
+### Generics 
+
+In order to implement functionality where behavior has been abstracted so that the logic implemented can be repeated with different varaible types, TypeScript offers "generics". 
+
+This abstraction of behavior with generics is pervasive in Framework's like [Angular](https://angular.io/). Generics is also common in a variety of Software Engineering design principles and patterns like the ["observer" pattern](https://sourcemaking.com/design_patterns/observer). In the observer pattern; a one-to-many relationship is defined between an object and all it's "obsevers" such that anytime the "subject" or the object being observed changes, every "observer" is updated automatically. 
+
+To declare a generic in TypeScript we using angle brackets (`<>`) enclosed with an alias (often "T": `<T>`) representing an abstraction of the object that is being added the "generic" logic or functionality defined by in the generic type definition.  
+
+In TypeScript this might look something like: 
+
+```ts 
+/* declare generic type of "Observable" 
+ * with the variable `T` representing 
+ * any object that where "Observable" 
+ * functionality is needed */
+class Observable<T> {
+  /* define that any observable will have a public property 
+   * named `value` */
+  constructor(public value: T) {}
+}
+
+/* explicitly declare an observable number */
+let importantNumber: Observable<number>; 
+
+/* explicitly declare an observable person */
+type Person = { first: string, last: string }
+let importantPerson: Observable<Person>;  
+
+/* implicitly declare an observable number */
+let secondPassed = new Observable(23) 
+```
+
+With generics, logic and functionality can be created without knowing the type of data (primitive or structured) that will implement the abstracted ("generic") logic. 
+
+## And that's the basics 
+
+Hopefully by this point you've got a basic idea of what TypeScript is, what benefits and drawbacks TypeScript offers when compared to JavaScript and the basics of defining, implementing and using strongly typed variables, interfaces, arrays, and the abstraction of typing using Generics. 
+
