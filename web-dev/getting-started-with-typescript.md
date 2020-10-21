@@ -1,6 +1,15 @@
-# Diving into TypeScript 
+# Lets talk TypeScript 
+
+Ever wonder what the buzz surrounding TypeScript is all about? Keep reading and come on a deep dive on TypeScript addressing the fundamental questions surrounding TypeScript: 
+* What is TypeScript? 
+* What features/benefits does TypeScript offer
+* What are the fundamentals a JavaScript developer needs to get started with TypeScript? 
+
+> It is assumed that readers of this post understand basic JavaScript and have some experience creating JavaScript applications. 
 
 ## What is TypeScript 
+
+As with anything, a good place to start is with defining "TypeScript". 
 
 [TypeScript](https://www.typescriptlang.org/) is: 
 * a super-set of JavaScript 
@@ -10,27 +19,41 @@
 
 ## What's the appeal? 
 
-As a developer that got started with programming in the [strongly typed langauge](https://stackoverflow.com/questions/2690544/what-is-the-difference-between-a-strongly-typed-language-and-a-statically-typed) of C#, learning the "langauge of the web" (JavaScript), was something relatively uncomfortable for me, primarily due to concept that I could assign any variable to any data type at anytime (without casting); felt uncomfortable and wrong to me. 
+More apprehensive developers may ask: "Why would I want to learn TypeScript?" and "How would TypeScript improve code?". To answer this as concisely as possible: TypeScript doesn't offer any functionality that isn't offered by JavaScript, TypeScript simply adds [strong-typing](https://stackoverflow.com/questions/2690544/what-is-the-difference-between-a-strongly-typed-language-and-a-statically-typed) on top of JavaScript. 
+
+Personally, I began learning programming in the strongly typed langauges like C# and Java. Transitioning to a weakly typed langauge like JavaScript was uncomfortable. JavaScript meant that the rules of strongly-typed programming langauges were no longer true. The idea that I could declare a variable with a value of `23` and later change it to the string `"Sally"`, and that was "ok" seemed like bad behavior, like breaking the rules. 
+
+This is where TypeScript comes in; it adds strong typing (and the associated benefits/drawbacks) to the langauge of the web. 
 
 ### Strongly and Weakly typed languages 
 
-Weakly typed langauges (like JavaScript) felt like the Wild West, like all the rules had been thrown out, and anyone could do whatever they wanted. 
+Weakly typed langauges (like JavaScript) often made me feel like I was doing something bad - "breaking the rules", because when I learned how to write my first piece of code, I was also taught the various data types, and that these types **must** be declared, or the code will not compile. End of story.
 
-I missed the sense of confidence that a strongly typed langauge offered by simply verifying that variable assignments were valid by checking to see if they assignment to the variable was valid for the variable type declared - providing feedback at compile time rather than at runtime and enabling developers to catch errors before the code was ever run. 
+Enter JavaScript - which will infer and coerce variable to the desired type whenever possible. With weakly typed langauges like JavaScript a variable's type is mutable (can be changed). A variable could start out holding a string value, and later hold a number, or an object or a boolean, etc. 
 
-Arguably, strongly typed langauges offered something even more impactful to me as a developer... the tooling  integrated into IDE's like [Visual Studio Code](https://code.visualstudio.com/) or VS Code: 
+Essentially the fundamental rules embedded in someone working with Java and C# were thrown out the window. 
+
+With a strongly typed langauge, variable must be declared with a type. This type would define a contract that the variable assigned to the type would be required to follow. This type would be declared when the variable was created and could not be changed (immutable type) once declared.   
+
+With strong-typing; variables, functions, and objects have strictly defined rules that could not be broken. Any piece of code that fails to adhere to the rules defined by the type or interface defined would throw an error, and fail to compile. 
+
+These contracts mean that the developer writing the code, or building features implementing third-party code (that is strongly-typed) cannot write code that doesn't follow the defined contract. A variable initally defined as a number must always be a number. 
+
+It also means that functions in strongly-typed langauges like TypeScript have contracts for both the input (parameters) as well as the output (the return value), and that if the code was attempted to be used in a way that violates the terms of the contract an error is thrown and the code will fail to compile. 
+
+Personally, I loved the tooling that strongly-typed langauges offered in modern IDEs: 
 * intelligent code completion of methods/function, variables, fields, classes, interfaces, modules, properties/attributes, and more.
 * in-line access access to third-party library documentation
 
-These two features were instrumental in my workflow with C# and helped me find problems ("bugs") before ever running my code. 
-
 ## Weighing Pros and Cons
 
-While I personally love the structure that comes with strongly typed languages, I would feel remis if I didn't mention the benefits of weakly typed languages: flexibility. 
+While I personally love the structure that comes with strongly typed languages, I would feel remis if I didn't mention the benefits of weakly-typed languages. The main benefit; flexibility. 
 
-With weakly typed langauges, a function can return one value type in one case and a totally different value type in another instance, no overloading required, no interfaces required - it just works. The compilier doesn't care about the type of values provided to a function, class or method - nor does it care if about the type of the return value. In other words, I could provide an array, or an integer, or a decimal, or a string to a function/class/constructor (in a weakly typed langauge) and the compilier won't care. 
+With weakly typed langauges, a function can return one data-type in one case and a totally different value-type in another case. No overloading, interfaces, or generics required - it just works. 
 
-For example I could have a function that takes two arguments/parameters and adds them together; but since the data is "weakly typed" these parameters could be of any data type, and the function could return any data type, or nothing at all - the compilier won't complain either way. 
+The JavaScript compilier doesn't care about the type of values provided to a function, class or method. Additionally, the type of the return value of the function is also irrelevant to the JavaScript compiler. 
+
+In JavaScript, a function that takes two arguments/parameters and adds them together can return different data types, and the code will compile without issue. This could be fine, but it could also result in "bugs" that are difficult to find and de-bug as there is no garuntee to the type or structure of the data going into, or returning from a function. 
 
 ```js
 // function to add 2 variables together 
@@ -38,51 +61,63 @@ function add(x, y) {
   return x + y 
 }
 
+/* by changing the data-type of parameters provided to the 
+ * function, we also can change the data-type returned by the function */
 add(2,3) // => 5 (number)
 add('2', '3') // => '23' (string)
 ```
 
-In the example above, providing each variable as a number results in addition, but providing the same values represented as strings returns a concatenated string comprised of the parameters. 
+In the example above, the function `add(x,y)` takes in two parameters (`x` and `y`) and returns `x + y`. Used as intended this would return the sum of the two numbers provided. However, if we alter those one or both of those variables to have a data-type of `string`, the function will return a string where the parameters have been concatenated.
 
-This generally results in more concise code that avoids interfaces, type declarations, and casting that would be necessary to compile code in a strongly typed langauge. Some would argue it allows the developer to be more expressive and more flexible (polymorphism, mixins, etc.). 
+There are scenarios where it may be desireable to have different data-types returned by a function, depending on the parameters provided to the function. In this way, we do not need interfaces or generics to implement abstract functionality, we can simply ignore the data-type.
 
-However, since the compilier has less information on the structure (parameters, return value, etc.) of the code, common errors that would be checked and verified with strongly typed langauges are not caught by the compilier in weakly typed langauges until the code is executed. Additionally, strongly typed langauges are (somewhat) self-documenting; allowing editors to pick up on the names, types, and return values of functions/methods/procedures and provide this inline (within the code editor) as the code is being written. 
+This can make JavaScript code more concise. Avoiding type/generic definitions, interfaces, and casting. It could be argued that weakly-typed langauges like JavaScript enables developers to be more expressive, and more flexible code (polymorphism, mixins, etc.). 
 
-In short, Weakly typed langauges benefit from: 
+However, since the compilier has no defined rules on the data-types of variables, the parameters provided to a function or the return value of a function, the compilier cannot identify unexpected behavior (because we haven't defined what the expected behavior is). 
+
+As a result, working in weakly-typed langauges means that unexpected behavior may not appear until an application is published and unexpected inputs are provided that break the functionality of the application. 
+
+> Thing about it: would you rather be alerted to problems as you develop by a compilier or after deployment, when the application is being used be real customers? 
+
+Strongly typed langauges also enable (somewhat) self-documenting code; allowing IDEs to automatically display information about the names, types, and return values of functions/methods/procedures and provide this inline (within the code editor) as the code is typed, and even auto-completing code in some scenarios. 
+
+In short, weakly-typed langauges benefit from: 
 * more concise code 
 * more flexible code 
 * more expressive code 
 
-While, strongly typed langauges benefit from: 
+While, strongly-typed langauges benefit from: 
 * Implicit documentation 
 * Fewer errors at runtime via strong typing 
 * Increased performance through optimization (sometimes)
 
-> And **in my opinion** strongly typed langauges make it easier to work with third-party libraries by enabling in-line documentation of TypeScript code. 
+### A Metaphor 
+
+In my head, weakly-typed languages seem to me like a highway that has no speed limit and no rules. There are no rules about the speed at which you travel, the mode of transportation, safety regulations, etc. 
+
+If used as intended a highway like this has the potential to function fine, maybe even better in specific situations. As with weakly-typed langauges, we are trading structure and rigid rules for flexibility. 
+
+If such a highway (a metaphor for a weakly-typed variable or function) existed, I can easily imagine people driving faster, on both sides and in both directions, failing to signal or use seatbelts, and countless other things that would appual a rule-abiding citizen. 
+
 
 ## Enter TypeScript 
 
-As if to address my concerns (and those of other developers), [TypeScript](https://www.typescriptlang.org/) was created developed by Microsoft in 2012, primarily to address the IDE tooling described previously, without requiring client-side adoption of new technologies since TypeScript was built as a superset of JavaScript and can be compiled to any version of JavaScript all the way back to ECMAScript 3 (released in 1999) and giving developers the type-checking of strongly typed langauges without the road-blocks of an entirely new programming langauge of the web that would require browsers to be updated to support the new langauge. 
-
-Adoption of TypeScript in the Web Development community has been relatively slow since its release in 2012; but it seems to be spiking now as many popular frameworks adopt and support TypeScript.
-
-So what does a developer need to know to get started in TypeScript? 
-
+[TypeScript](https://www.typescriptlang.org/) was created developed by Microsoft in 2012 and it seeks to add the structure and rules of strongly-typed langauges to "the langauge of the web" (JavaScript) without requiring changing the experience for end-users. 
 
 ## TypeScript Fundamentals 
 
-First, lets be clear: As a superset of JavaScript, all JavaScript is valid TypeScript - which means that adoption of TypeScript can happen incrementally. TypeScript also provides (on top of JavaScript): 
+As a superset of JavaScript, all JavaScript **is valid** TypeScript. In other words; any valid JavaScript code is also valid in TypeScript; however it doesn't recieve the benefits (or drawbacks) of strong typing unless the JavaScript is annotated with types. This is significant for a couple reasons: 
 
-* Future Proofing - Since TypeScript cannot run in its default state, but must transpiled into JavaScript to be executed- developers using TypeScript do not need to be concerned with browser support as TypeScript code can be transpiled into various versions of JavaScript with release dates as far back as 1999 (which the TypeScript compilier does by default). 
-* The TypeScript compilier is configurable - enabling developers to configure how TypeScript code is converted into JavaScript and which version of JavaScript TypeScript code should be transpiled to. 
+* Progressive Adoption - Since TypeScript is a superset of JavaScript, strong-typing can be added incrementally, without requiring re-writes of entire applications since the TypeScript is compiled to JavaScript anyway. 
+* Future Proofing & Compatability - Since TypeScript cannot run in its default state and must transpiled into JavaScript in order to be run - developers using TypeScript do not need to be concerned with browser support as TypeScript code can be transpiled into various versions of JavaScript with release dates as far back as 1999 (which the TypeScript compilier does by default). 
 
 ### Installation 
 
 TypeScript can be installed via [NPM](https://www.npmjs.com/get-npm) using the command `npm install -g typescript` which will install the TypeScript compilier globally. Once installed, we can see what version of typescript we have by running `tsc --version`. 
 
-### Configuration 
+### Setup and Configuration 
 
-There are numerous options that can configure the way the TypeScript compilier transpilies JavaScript code. These options can be executed manually at the time of compilation (as command line arguments) or can be picked up automatically with a JSON configuration; `tsconfig.json` placed in the project's root directory, and will automatically be picked up by the TypeScript compilier. 
+There are numerous options that can configure the way the TypeScript compilier transpilies TypeScript code into JavaScript code. These options can be executed manually at the time of compilation (as command line arguments) or can be picked up automatically with a JSON configuration; `tsconfig.json` placed in the project's root directory, and will automatically be picked up by the TypeScript compilier. 
 
 There are numerous options here, but most are just that: "options", meaning that you do not **need** to provide them. However, there are some common one's that I'd like to bring to discuss: 
 
@@ -123,9 +158,15 @@ There are numerous options here, but most are just that: "options", meaning that
 }
 ```
 
-### TypeScript and Strong Typing 
+Whether run manually, or automatically using the "watch" function configured in a `tsconfig` file: TypeScript code placed in `.ts` files, will be converted into its configured version JavaScript code (ES3 by default) with the same file names, but with the `.js` extension. 
 
-In TypeScript, variable have strong types. In other words; a variable that holds a number, must always hold a number, and a variable that holds a string; must always hold a string value. With TypeScript the data type associated with a variable can be declared either _explicitly_ or _implicitly_. 
+### Declaring variable types 
+
+In TypeScript, we define and assign types to variables. Once assigned the type cannot be changed. 
+
+#### Implicit vs. Explicit Type Declarations 
+
+Type declarations can be declared/implented in two ways; _explicitly_ or _implicitly_. 
 
 To _implicitly_ declare a the data type of a variable, we can define the value of the variable at the time of declaration, which allows the compilier to infer the data type of the variable and enforce its type. 
 
@@ -157,15 +198,23 @@ lucky = true //=> valid
 > Best Practice: If you have a value to assign at the time of the variable declaration, do not explicitly declare its type as it would be redundant. 
 
 
-### Working with Types in TypeScript 
+### Moving beyond "primitive" data-types 
 
-It is very common in modern web applications that a variables that holds a value that is not a ["primitive" data type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures). 
+In JavaScript (and TypeScript) there are six (6) primitive data types: 
+1. `undefined` 
+2. `boolean`
+3. `number`
+4. `string`
+5. `bigint`
+6. `symbol` 
+
+More complex pieces of information are representing with what is referred to as "Structural Types". This includes; arrays, maps, sets, dates, and any other "object" where it is necessary to encapsulate more than one primitive data-type, or that need to structure data in a specific manner. 
 
 #### Custom Types 
 
-With TypeScript, custom "types" can be declared using the keyword: `type` followed by the name of the type (in Pascal case) and setting it equal to (`=`) the type definition. 
+With TypeScript, custom "types" can be declared using the keyword: `type` followed by the name of the type (in Pascal case) and setting it equal to (`=`) the type definition. This sets up a contract that can define the format of a variable, the format of parameters to a function as well as the format of a function's return value. 
 
-Once declared, the "custom types" can be assigned as variable types just like primitive data types. 
+Once declared, a custom type is implemented exactly like a primitive type. 
 
 ```ts
 /* declare custom type of "Font" which will be required to always be a string value */
@@ -182,11 +231,9 @@ myFont = "Italic"
 myFont = 400 
 ```
 
-In this way, TypeScript enables more readable code, while still type-checking variable assignments. 
-
 #### Union Types 
 
-TypeScript goes beyond defining basic type definitions by providing "union types". With union types, not only is the primitive data type enforced, but the actual value is limited to the value(s) defined within the union type declaration.  
+TypeScript goes beyond primitive and custom types by providing "union types". With union types, not only is the structure and type of data enforced, but the actual value is limited to the value(s) outlined within the union type declaration.  
 
 ```ts 
 /* be defining the `Style` type as a union type, 
@@ -207,7 +254,9 @@ font = 'helvetica'
 
 ### Interfaces 
 
-Another to define the structure of an object or class in TypeScript is through **interfaces**. With an interface, rather than specifying the structure or values of a variable, an interface specifies the shape of an object or class. The best way to understand this is through an example: 
+Another to define the structure in TypeScript is through **interfaces**. Interfaces specify the shape of an object or class without strictly requiring the value be of a specific type. In this way, TypeScript provides abstraction and flexibility. 
+
+As long as a variable, parameter or return value aheres to the rules established in the interface definition - the variable, parameter and/or return value can be of any type.
 
 
 ```ts
@@ -230,13 +279,19 @@ winner = "Usain Bolt"
 winner = { first: "Usain", last: "Bolt", country: "Jamaica" }
 ```
 
-By declaring the `interface Person = {...}`, the TypeScript compilier can now enforce that every variable declared to be "using" or "implementing" the `:Person` interface must have the exact structure defined in the interface. 
+In this case, a variable implementing the interface `Person` ensures that the variable `winner` must be an object with a property for `first` that is has a type `string` and property named `last` which is also of type string. 
 
-In this case, a variable implementing the interface `Person` must be an object with a property for `first` that is a `string` and property named `last` which is also a string. All variables implementing the `Person` interface **cannot** have any other properties like `country` (regardless of the data type of `country`), would throw an error. Additionally assining a variable implementing the `Person` interface cannot have a different structure like `bestUser = "My aunt Suzie`. Attempting to assing a variable implenting the `Person` interface described above would create a compile-time error as the variable assignment does not match the interface declaration. 
+All variables implementing the `Person` interface must adhere to these rules. They **cannot** have any additional  properties (like `country`), would throw an error and that assining any assignment to the variable `winner` cannot deviate from the rules defined by the interface. Any violation of those rules would throw an error. 
 
 #### Making more flexible interfaces 
 
-In some situations defining the structure of a variable using an interface can be very restrictive as there cannot be any additional properties to any objects/classes implementing the interface that are not included in the interface definition. A little trick for circumventing this limitation is to declare a "string" property that is of type `any`. This results in dictionary-like functionality, defining addtional fields as key/value pairs. 
+In some situations, the rigid definition of types and interfaces can restrict functionality. One such scenario is in the event where there is a collection of items that all have `first` and `last` properties that are both strings, but could have additional properties beyond that as long as the `first` and `last` properties exist. 
+
+This restriction can be circumvented wiht a little creativity by adding a little bit to the the type definition: 
+
+So if the goal was to have enable the scenario where we have a collection of objects that have `first` and `last`  properties that are `string`s, we can specify that an additional property named as a `string` will have an associated type of `any`, enabling greater flexibility through polymorphism. 
+
+> This is just like a dictionary 
 
 ```ts
 /* adding an addtional key value pair to be stored with any name and any value */
@@ -258,10 +313,6 @@ winner = { first: "Usain", last: "Bolt", fast: true }
 winner = "Usain Bolt" 
 ```
 
-In this way, we can ensure that all variables of that type have certain base attributes, but can have additional attributes as needed and enabling polymorphic operations. 
-
-
-
 ### Types and Functions 
 
 In addition to defining types and interfaces for variables, TypeScript enables (and encourages) defining types for functions in terms of both parameters and return values. 
@@ -280,7 +331,7 @@ function pow(x:number, y:number):number {
 }
 ```
 
-If you have a function that does **not** return a value, (event listeners, side-effects, etc.), you can specify the return type as `void`. 
+Function that do **not** return a anything, (like event listeners, side-effects, etc.) should be defined as having a return type of `void`. 
 
 ```ts 
 /* Example of a functiont that does not return any value */
@@ -290,11 +341,9 @@ function handleClick(event:React.MouseEvent):void {
 
 ```
 
-By defining the parameters and return values of functions, TypeScript can:
+By defining the parameters and return values of functions, the TypeScript compilier can:
 * validate parameters to functions are of the correct type 
 * validate the return value of a function
-
-And possibly more important for the maintainability of a project; since the parameters and return values are declared; TypeScript code is _almost_ self-documenting when combined with good naming conventions. 
 
 
 ### Strongly typed data structures
@@ -341,7 +390,6 @@ const people:Person[];
 people.push({ first: 'Barack', last: 'Obama', age: 59}) // valid 
 people.push({ first: 'Steve', last: 'Jobs' }) // throws an error 
 ```
-
 
 #### Tuples 
 
