@@ -315,40 +315,39 @@ winner = "Usain Bolt"
 
 ### Types and Functions 
 
-In addition to defining types and interfaces for variables, TypeScript enables (and encourages) defining types for functions in terms of both parameters and return values. 
+In addition to defining types and interfaces for variables, TypeScript enables (and encourages) defining data-types in the function definition such that the parameters of a specific function adhere to the types declared, and return a value that adheres to the type specified as the return type.
 
-Function parameters are defined using the same syntax as type/interface declarations, and the return value of a function is placed after the closing parenthesis of the input parameters and before the function body using the a colon (`:`):
+Strongly typing parameters of functions and their return values uses the same syntax as type/interface declarations (exluding the `const`/`let` used with variable declarations). First we define a name for each parameter, for each named parameter, the type is defined using a colon (`:`) followed by the type (e.g. `x:number`). The _return value_ of the function is defined following the closing parenthesis (`)`) of the function's parameter list and before the opening curly-brace (`{`) of the function's body: 
 
 ```ts
-/*Function to raise x to a power of y WITHOUT type declarations */
+/* function to raise x to a power of y WITHOUT type declarations */
 function pow(x, y) {
   return Math.pow(x,y) 
 }
 
-/*Function to raise x to a power of y WITH type declarations */
+/* The same function to raise x to a power of y WITH type declarations */
 function pow(x:number, y:number):number {
   return Math.pow(x, y) 
 }
 ```
 
-Function that do **not** return a anything, (like event listeners, side-effects, etc.) should be defined as having a return type of `void`. 
+Function that do **not** return a anything, (like event listeners, side-effects, etc.) should be defined as having a return type of `void`: 
 
 ```ts 
 /* Example of a functiont that does not return any value */
 function handleClick(event:React.MouseEvent):void {
   // ... execute event handler 
 }
-
 ```
 
-By defining the parameters and return values of functions, the TypeScript compilier can:
+By adding strong typing to parameters and return values of functions, the TypeScript compilier can:
 * validate parameters to functions are of the correct type 
 * validate the return value of a function
 
 
-### Strongly typed data structures
+### Working with arrays 
 
-Arrays declared in TypeScript _without_ a type annotation work exactly as they would in JavaScript - in other word's it doesn't matter the data type of the each element within the array; the first element in the array could be a `string`, the second could be a `number` and the third a `boolean`.... And that would be totally valid. 
+Arrays defined in `.ts` (TypeScript) files that are not strongly-typed function the same as arrays in `.js` (JavaScript) files. Elements within arrays without strong-typing will accept elements of any data-type, which could result in each element adhering to the same rules (i.e. be of the same type), or being of varying types. 
 
 ```ts 
 /* declaring an array without a type will essentially "opt out" of 
@@ -361,18 +360,16 @@ arr.push('Susan')
 arr.push(false)
 ```
 
-While this makes working with arrays very flexible; as a developer writing a function in TypeScript using arrays without a type annotation means that we have no way of insuring that every element in the array is of the same type. 
+By declaring adding typing to arrays, the compiler will throw an error anytime an element failing to adhere to the type/interface outlined in the array's type definition will throw an error.
 
-By declaring the array as strongly typed, the we can be sure at compile time that every element we add to that array aheres to the type declaration. In the event that a call is made to add an element to the strongly typed array that does not adhere to the type definition will result in an error being thrown. And best of all; this will be thrown at compile time. 
-
-Adding typing is the same as it is with variables. First declare the name of the array variable, then a colon (`:`) followed by the `type` or `interface` and terminated with opening and closing brackets (`[]`) to indicate that it is an array where every element in the array adheres to the `type` or `interface` defined.   
+Typing is added to arrays similarly to adding typing to variables and function definitions. First declare the type of variable (`const`/`let`), followed by the name of the array, followed by a colon (`:`) and the `type` (e.g. `:number`) or `interface` (e.g. `Person`), then with opening and closing brackets (`[]`) to indicate that it is an array of that type.
 
 ```ts 
 /* strongly typed array of numbers */
 const arr: number[] = []`
 ```
 
-With strongly typed arrays, IDE's like visual studio will be able to auto-complete property calls to elements in the array (assuming they are not a primitive data type). This can be useful when working with complex or irregular objects as well as increasing performance through optimization (in some cases). 
+This can be useful when working with complex or irregular objects as well as increasing performance through optimization (in some cases). 
 
 ```ts
 /* declare an interface */
@@ -420,7 +417,10 @@ const competitors: Contestant = [24, 'Tony Robbins', false]
 
 In order to implement functionality where behavior has been abstracted so that the logic implemented can be repeated with different varaible types, TypeScript offers "generics". 
 
-This abstraction of behavior with generics is pervasive in Framework's like [Angular](https://angular.io/). Generics is also common in a variety of Software Engineering design principles and patterns like the ["observer" pattern](https://sourcemaking.com/design_patterns/observer). In the observer pattern; a one-to-many relationship is defined between an object and all it's "obsevers" such that anytime the "subject" or the object being observed changes, every "observer" is updated automatically. 
+This abstraction of behavior with generics is pervasive in Framework's like [Angular](https://angular.io/). Generics are also common in a variety of Software Engineering design principles and patterns like the ["observer" pattern](https://sourcemaking.com/design_patterns/observer). In the observer pattern, a one-to-many relationship is defined between an object and all it's "obsevers" (other objects), such that when the state of the "subject"
+ being _observed_ changes, all the observers of the subject are automatically updated. 
+
+#### Generic Syntax 
 
 To declare a generic in TypeScript we using angle brackets (`<>`) enclosed with an alias (often "T": `<T>`) representing an abstraction of the object that is being added the "generic" logic or functionality defined by in the generic type definition.  
 
