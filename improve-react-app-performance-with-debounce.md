@@ -1,10 +1,10 @@
-# High Performance through Debounce 
+# Debounce for better React applications 
 
-While debounce is a more broad development methodology and can be applied in a variety of scenarios - this article focuses on implementation of the debounce pattern in React. 
+While debounce is a more broad development methodology and can be applied in a variety of scenarios - for now lets focuses on implementation of the debounce pattern in [React](https://reactjs.org/). 
 
 # What is Debounce? 
 
-Debounce, put simply; is a way of delaying some pience of code, until a specified time to avoid unneccessary CPU cycles.
+Debounce, put simply; is a way of delaying some pience of code, until a specified time to avoid unneccessary CPU cycles and increase code performance. 
 
 ## Why does it matter? 
 
@@ -12,7 +12,7 @@ One of the most expensive operations with any application is a database request 
 
 In short, these requests can take time to execute and greatly slow down an application resulting in degraded application performance, all while remaining critical to most applications core functionality. 
 
-Any application that needs to retrieve, modify, delete, or add data to a 1st party or 3rd party API (in React) will often execute an "effect" to retrieve the data via a hook appropriately named: `useEffect()`. This effect will execute anytime its dependent data (defined in the array of dependencies), changes. Most react developers will store the information returned in another hook provided by the React API: "state" (`useState()`), similar to the example below: 
+Any application that needs to retrieve, modify, delete, or add data to a 1st party or 3rd party API (in React) will often execute an "effect" to retrieve the data via a hook appropriately named: `useEffect`. This effect will execute anytime its dependent data (defined in the array of dependencies), changes. Most react developers will store the information returned in another hook provided by the React API: "state" (`useState`), similar to the example below: 
 
 ```js
 /* src => ./ContactCard.js */
@@ -25,27 +25,29 @@ import React, { useState, useEffect } from 'react'
  * @param props - props containing a `userId` property (destructured)
  */
 export default const ContactCard = ({ userId }) => {
-  const [user, setUser] = useState({}) // state
+  const [contacts, setContacts] = useState([]) // state
 
   /* anytime the `userId` provided via props to the function changes, 
    * make a new call to the API to retrieve the user ID and save it 
    * in local state */
-  useEffect(() => {
-    fetch(`https://my.app/users/${userId}`)
+   fetch(`https://my.app/contacts/${userId}`)
       .then(res => res.json())
-      .then(user => setUser(user))
+      .then(data => setContacts(data.contacts))
   }, [userId])
 
 
-  /* return JSX to render the user details if the user has been retrieved */
-  return user ? (
-    <section className="user-details">
-      <h1>{user.name}</h1>
-      <h3>{user.title}</h3>
-      <p>Phone: {user.phone}</p>
-      <p>Email: {user.email}</p>
-    </section>
-  ) : null  
+/* return JSX to render the user details if the user has been retrieved */
+  return contacts ? contacts.map(user => {
+      return (
+        <section className="user-details">
+          <h1>{user.name}</h1>
+          <h3>{user.title}</h3>
+          <p>Phone: {user.phone}</p>
+          <p>Email: {user.email}</p>
+        </section>
+      )
+    })
+  ) : <p>No contacts</p> 
 }
 ```
 
@@ -65,15 +67,15 @@ Refactored with `setTimeout`, the same `fetch` request could be:
 useEffect(() => {
   const timeout = setTimeout(() => {
     /* executing our expensive operation */
-    fetch(`https://my.app/users/${userId}`)
-        .then(res => res.json())
-        .then(user => setUser(user))
+     fetch(`https://my.app/contacts/${userId}`)
+      .then(res => res.json())
+      .then(data => setContacts(data.contacts))
     }, [userId])
   }, 250) /* <= the amount of delay before executing the expensive operation */
   return () => clearTimeout(timeout)
 ```
 
-The end result: No matter how many times the `userId` changes and calls a re-execution of the effect (within the specified delay window), the actual expensive operation associated with the effect will only occur once. 
+The end result: No matter how many times the `userId` changes and calls a re-execution of the effect (retrieving and rendering the related contacts), the actual expensive operation associated with the effect will only occur once. 
 
 ## Making it re-usable 
 
@@ -105,7 +107,7 @@ export default const useDebounceEffect(effect, dependencies, delay = defaultDela
 
 With the new `useDebounceEffect`, effects can be implemented almost exactly like they would with the standard React `useEffect` hook; providing a function that should be executed whenever a dependency changes that would require the effect to be executed again, but with a delay that says wait 250 milliseconds before executing the effect to make sure that the dependency or dependencies are finalized. 
 
-The `ContactCard` created early could then implement the `useDebounceEffect` hook to minimize expensive operations and increase application performance. 
+The `ContactList` created early could then implement the `useDebounceEffect` hook to minimize expensive operations and retrieving and re-rendering a user's contacts, resulting in increased application performance. 
 
 ```js
 /* src => ./ContactCard.js */
@@ -119,28 +121,31 @@ import useDebounceEffect from './useDebounceEffect'
  * Data driven React component that recieves a userId as a prop 
  * @param props - props containing a `userId` property (destructured)
  */
-export default const ContactCard = ({ userId }) => {
-  const [user, setUser] = useState({}) // state
+export default const ContactList = ({ userId }) => {
+  const [contacts, setContacts] = useState([]) // state
 
   /* execute the same fetch request, but only do so after 
    * 500 miliseconds - essentially wait 500 miliseconds for the 
    * dependencies to be finalized */
   useDebounceEffect(() => {
-   fetch(`https://my.app/users/${userId}`)
+   fetch(`https://my.app/contacts/${userId}`)
       .then(res => res.json())
-      .then(user => setUser(user))
+      .then(data => setContacts(data.contacts))
   }, [userId], 500)
 
 
   /* return JSX to render the user details if the user has been retrieved */
-  return user ? (
-    <section className="user-details">
-      <h1>{user.name}</h1>
-      <h3>{user.title}</h3>
-      <p>Phone: {user.phone}</p>
-      <p>Email: {user.email}</p>
-    </section>
-  ) : null  
+  return contacts ? contacts.map(user => {
+      return (
+        <section className="user-details">
+          <h1>{user.name}</h1>
+          <h3>{user.title}</h3>
+          <p>Phone: {user.phone}</p>
+          <p>Email: {user.email}</p>
+        </section>
+      )
+    })
+  ) : <p>No contacts</p>
 }
 ```
 
