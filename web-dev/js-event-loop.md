@@ -52,19 +52,25 @@ Similar to the role of a manager; the main thread is repsonsible for ensuring al
 
 ### The JavaScript Event Loop 
 
-The event loop is a the defined process in which frames are pulled from the callstack, and placed by the JavaScript runtime into the _messsage queue_ for execution. At the begining of each iteration through the event loop, the JavaScript interpreter pops frames from the call-stack, and enqueues them in the event loop.  
+The event loop is the repeated process in which JavaScript code is exectued. When a JavaScript file is processed, each line is feed to the JavaScript interpreter in order from the top down. As `functions` are parsed, they are placed onto the call-stack as a "frame", which represents a single operation. 
 
-The event loop begins by dequeing all the frames ("tasks"/"operations") from the call-stack into the event loop and processing all the tasks in order. Once all the tasks are completed, the rendering phase of the event loop begins. During the rendering phase, the visual elements are processed and displayed. This begins by processing the CSS (styles), then the HTML (layout), and then applying the styles to the layout. The process finishes by "painting the screen" or rendering the content as pixels on the display.
+When the event loop begins, it "pops" frames from the call-stack, and enqueues them into the "message queue" which is the list of tasks to be executed during that iteration through the event loop. Each one is processed to completion, one at a time, in order until all the tasks have **run to completion**.  
 
-So everytime we loop through the event loop: 
-1. Frames are pulled from the call-stack, and into a queue to be executed in order during the first phase of the Event loop. 
-2. Once all frames have been processed, the event loop enter's the rendering phase, where styles are processed and applied to the elements in the DOM, then rendered as pixels on the screen. 
+> In more desktop focused langauges, this process would be run on another thread, and could be stopped by the runtime to execute other code. However in JavaScript and in the event loop, once a message is dequeued, it cannot be interupted, and as result if a message takes too long to complete, all other work the application needs to perform, like scrolling, or clicking, cannot be addressed. 
+ 
+When all the messages in the message queue have been dequeued and run to completion, and no more _messages_ remain in the _message queue_. Next the rendering phase of the event loop begins. 
 
-It is important to note that the rendering phase is _optional_, if there are no changes to the DOM resulting from the execution of tasks in the first part of the event loop, the rendering phase is skipped. This is how browser can increase efficiency and avoiding wasting resources re-processing the CSS, HTML, and re-rendering that information as pixels on the screen in scenarios where the frames executed have not changed any visible elements on the screen.
+During the rendering phase all visual elements are processed and displayed as pixels. First, the CSS (styles) is processed _to completion_. When that has run to completion, the the HTML (layout) is parsed _to completion_. Then the styles to are applied to the DOM elements, and when that has _run to completion_, the browser can "painting the screen" or rendering those elements as pixels on the display.
 
-The goal is to iterate through the event loop as quicky as possible, so that new tasks/operations can be dequeued from the call-stack and changes to the layout or style can be applied and rendered. To enable the event loop to execute as quickly as possible, demanding operations are often placed on another thread to be run concurrently (in parallel) or synchronously. 
+Upon completion of the rendering phase, the Event loop re-starts, processing functions places as _frames_ on the call-stack or any messages added while the previous loop was in-progress. New messages can only be added to _message queue_ at the start of the Event Loop.
 
-#### Threading and Asynchronous Operation
+The rendering phase is _optional_, and can be skipped to improve effeciency. If there task portion of the event loop runs to completion and the DOM is unchanged, the rendering phase will likely be skipped to avoiding wasting resources re-processing the CSS, HTML, and re-rendering that information as pixels on the screen that are unchanged.
+
+The goal is to iterate through the event loop as quicky as possible, so that new tasks/operations can be _popped_ from the call-stack, enqueued into the _message queue_ and _run to completion_ rapidly so as to pick up new messages or frames, and execute those instructions without delay. Once all the messages have been _dequeud_ from the _message queue_, the HTML/CSS is compared to see if changes have been made. If changes were made, the rendering phase begins to reprocess, evaluate, apply and display all the visual components. 
+
+To enable the event loop to execute as quickly as possible, demanding operations should (and typically are) placed on another thread to be run concurrently (in parallel) or synchronously. 
+
+#### Threading, Asynchronous Execution and DOM Manipulation 
 
 JavaScript code can be executed either synchronously and asynchronously. 
 
@@ -76,9 +82,9 @@ Single-threaded applications run all frames on a single thread. With a single th
 
 In JavaScript the main thread pops frames from the call-stack and enqueues them to be executed executed asynchronously by the JavaScript runtime which will manage the child threads.  
 
-#### Asynchronous operations and DOM Manipulation. 
+#### Avoiding Race Conditions 
 
-Only the main thread can interact with the DOM. 
+**Importantly**, only the main thread can interact with the DOM. 
 
 This is necessary because unlike synchronous operations which are garunteed to happen in order, asynchronous operations are only garunteed to resolve at some point in the future. There is no garuntee that two asynchronous operations started at the same time will finish executing in the same order they were invoked and can lead to a scenario where one asynchronous operation interfers with the execution of another asynchronous operation or a "race condtion". Race condtitions are scenarios in which asynchronous operations will or could interfer with each other with undesireable consequences. 
 
@@ -86,19 +92,7 @@ Since frames popped from the call-stack into the message queue, each operations 
 
 Some operations like reading/write data, making HTTP request, and performing encryption/decryption are known as "demanding operations". These operations will require a significant amount of time to completed. Demanding operations are often (and should be) run on seperate threads (asynchronously) so that iterations through the event loop can be completed quickly, and new frames are popped from the call-stack without letting several frames accumulate. 
 
-
-
-
-
-
-
-
-#### Asynchronous operations and DOM Manipulation 
-
-
-
-
-
+--------------
 
 
 
