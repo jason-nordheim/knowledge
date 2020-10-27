@@ -1,61 +1,107 @@
 # Demystifying the Event Loop 
 
-JavaScript is unlike most other programming languages for a whole series of reasons. As a weakly-typed, interpreted langauge that supports development of applications leveraging both OOP and Functional programming paradigms; JavaScript is like the Wild West of programming. While there are rules and best practices, few of them are "required" or "enforced". As a result, JavaScript applications can vary dramatially 
+## Pre-requisites 
 
-## Why talk about the Event Loop
+In order to gain value from this article; you should be familiar with: 
+* Familiarity with programming constructs 
+  * Understanding of the term "function" 
+  * Understanding of the term "object" 
+  * Understanding of what it means to "loop" or "iterate" 
+  * Understanding of queues and stacks (data-structures) 
+    * Familiarity with the terms "enqueue" and "dequeue" 
+  * Understanding of "callback functions" 
+  * Understanding of a "thread" 
+* Intermediate Understanding Web Development 
+  * Understanding HTML (purpose/use/structure)
+  * Understand what an "event" is in the context of web development 
+  * Familiar with the DOM (Document Object Model) 
+  * Experience using JavaScript to: 
+    * create/remove nodes from the DOM 
+    * create/remove "event-listeners"
+    * define classes  
 
-Despite being the [most popular programming langauge](https://insights.stackoverflow.com/survey/2020#most-popular-technologies), many (if not most) JavaScript developers have little or no understandings of how JavaScript works under the hood. While a deep understanding of how JavaScript works "under the hood" is unneccessary for most developers, a deeper understanding of JavaScript (ES6) can result in higher-performing web applications, written more concisely, and that execute more reliably. 
+## Defining the Event Loop 
 
-For developers with a good understanding of JavaScript's core features and functionality; a good next step is learning about the "event loop" - particularly with applications that execute asynchronous code. Understanding the event loop can help avoid annoying bugs, and result in cleaner, more concise, and more efficient web applications. 
+The "event loop" is broadly defined as the order in which JavaScript code executes.
 
-### Defining the Event Loop 
+<!-- ### JavaScript. Fundamentally different 
 
-The event loop is broadly; the order in which JavaScript code executes. 
+JavaScript is unlike most other programming languages for a whole series of reasons. As a weakly-typed, interpreted langauge that supports OOP (object-oriented programming) and Functional programming paradigms; JavaScript is like that friend that replies "sure, whatever you want". 
 
-### Synchronous vs. Asynchronous code execution 
+JavaScript also differs from Ruby, Python and Java because it was designed from its onset to be an interpreted langauge run in a web browser. While programming langauges like Ruby, Python and Java which have a "request-response" model - JavaScript is an "event-driven" langauge. 
 
-The signifigance of the event loop is largely demonstrated via something called "Race Conditions". 
+Sure JavaScript has some firm rules, and there are best practices, but for the most part JavaScript is designed to enable the developer to write web applications in a way that is familiar to them - to be "simple yet powerful" - and enable developers and software engineers to create web applications quickly and concisely.  In this way, JavaScript enables beginners to start working with the langauge's syntax earlier than older langauges.  
 
-Simply put, a race condition is a condition in which the execution of statements within a program depend on the sequence/timing of the program's processes or thread. In synchronous code, "race conditions" do not exist, each statement is executed in order from the top-down on the "main" thread. 
+This flexibility and low barrier of entry has made JavaScrip the [most popular programming langauge](https://insights.stackoverflow.com/survey/2020#most-popular-technologies), but many JavaScript developers lack a deep understanding of how JavaScript works since you don't **need** to understand what happens under-the-hood to add a little interativity to a static HTML document. -->
 
-The "main" thread is called that for the simple fact that this is where most of the applications logic is defined and executed. The "main" thread is the one that handles most of the applications operations and logic. It is where event handlers are defined and where the DOM is manipulated. 
+### Threading, JavaScript and the Event Loop 
 
-Asynchronous code is different. Asynchronous operations are **not** executed on the "main" thread. 
+In order to understand the Event loop, it is necessary to be familiar with how JavaScript code is processed and executing synchronously and asynchronously. 
 
-With asynchronous operatoins, one or more tasks are offloaded or executed by another processor, or on another thread. This enables developers to move demanding functions/operations from the "main" thread to be processed by another thread and enables the "main" thread to execute its operations quickly. If all code was executed synchronously, then demanding or resource-intensive processes would have to be executed on the main application thread and the application would remain frozen (unresponsive) until those operations completed.
+### Processing JavaScript  
 
-In JavaScript; asynchronous code is executed **after** synchronous code. As the main thread encounter's an asychronous operation, it skips it while it completes all of the defined synchronous operations. Once the synchronous operations have completed, any synchronous operations that were skipped will be offloaded to a seperate thread or processor. 
+As with most high-level programming langauges, JavaScript intelligently allocates both memory (RAM) and processing power (threads) as needed, then intelligent reclaims those resources when they are no longer needed in a process known as "garbage collection".
 
-The key idea here is to keep the procedures/functions executed on the main thread fast, so that can finish execution quickly and remain responsive to input from the user. 
+Applications begin with a single thread. A thread represents the allocation of computational resources to execute a "frame". Every application begins with a single thread called the "main thread".
 
-Common examples of asyncrhonous opeations: 
-* Network requests (HTTP requests)
-* Encoding/Decoding 
-* Monitoring Input Devices 
+The main thread is provisioned when the browser has retrieved the a JavaScript file typically retrieved from a link embedded in an HTML document within the `<script>` tag. As the JavaScript interpreter processes each `function`, "frames" are created, "pushed" to top of the call-stack. 
 
-One common asychronous task in web applications is making HTTP requests. An HTTP request can execute rapidly or it could take quite some time depending on a multitude of factors. If HTTP requests were executed synchronously, the application's main thread would be tied up processing those tasks, and would be unresponsive to inputs or events, and unable to interact with the DOM the HTTP response is resolved. 
+The call-stack is a LIFO (last in, first out) data structure, where elements are "popped" (removed) from the call-stack by recency. Frames added to the call-stack are always placed on top, so that the last frame added is always the first one retrieved - this process is called "pushing", while the processing of taking a frame off the stack is known as "popping". 
 
-However by offloading this work as an asynchronous operations, the "main" thread can execute quickly and keep the program/application responsive. 
+Similar to the role of a manager; the main thread is repsonsible for ensuring all the work gets done, but isn't responsible for execution of each taks. 
 
-### Promises 
+### The JavaScript Event Loop 
 
-In JavaScript (ES6), the eventual value returned as a result of an asychrnous operation is handled with "promises". A promise is simply an abstraction that represents an _eventual value_. 
+The event loop is a the defined process in which frames are pulled from the callstack, and placed by the JavaScript runtime into the _messsage queue_ for execution. At the begining of each iteration through the event loop, the JavaScript interpreter pops frames from the call-stack, and enqueues them in the event loop.  
 
-When "fufilled" or completed, the resulting value is returned to the the "main" thread in the form as a "promise" or _eventual value_. JavaScript enables developers to define logic for what should be done with the value returned by the promise (at its completion), to the main thread using `.then()` or `async`/`await` syntax. 
+The event loop begins by dequeing all the frames ("tasks"/"operations") from the call-stack into the event loop and processing all the tasks in order. Once all the tasks are completed, the rendering phase of the event loop begins. During the rendering phase, the visual elements are processed and displayed. This begins by processing the CSS (styles), then the HTML (layout), and then applying the styles to the layout. The process finishes by "painting the screen" or rendering the content as pixels on the display.
 
-### Race Conditions 
+So everytime we loop through the event loop: 
+1. Frames are pulled from the call-stack, and into a queue to be executed in order during the first phase of the Event loop. 
+2. Once all frames have been processed, the event loop enter's the rendering phase, where styles are processed and applied to the elements in the DOM, then rendered as pixels on the screen. 
 
-This is rather simple when there is just one (1) asychronous operation, but in modern web applications, there could be many asychronous operations being executed at the same time. With multiple asychronous operations, a concept called "Race Conditions" becomes relevant. 
+It is important to note that the rendering phase is _optional_, if there are no changes to the DOM resulting from the execution of tasks in the first part of the event loop, the rendering phase is skipped. This is how browser can increase efficiency and avoiding wasting resources re-processing the CSS, HTML, and re-rendering that information as pixels on the screen in scenarios where the frames executed have not changed any visible elements on the screen.
 
-A race condition is a situation in which a program or application depends on the timing of asychronous operations, such that resolution of asychronous operations impacts application functionality or stability. 
+The goal is to iterate through the event loop as quicky as possible, so that new tasks/operations can be dequeued from the call-stack and changes to the layout or style can be applied and rendered. To enable the event loop to execute as quickly as possible, demanding operations are often placed on another thread to be run concurrently (in parallel) or synchronously. 
 
-Essentially, if asychronous operation "a" and asychronous operation "b" are both offloaded by the main thead to different threads, the main thread has no garuntee when the operation will finish or what the returned value will be. More importantly, the completion of operation "a" before the completion of operation "b" (or vice-versa) may alter how the application behaves, and may have undesireable results (e.g. "bugs"). 
+#### Threading and Asynchronous Operation
 
-### Determining execution order  
+JavaScript code can be executed either synchronously and asynchronously. 
 
-Only the "main" thread can interact with the DOM, and since asynchronous processes are not running on the "main" thread, asynchronous operations cannot modify the DOM. Instead, the asychrnous operations must return an eventual value ("promise") to the main thread. Once the "promise" has been fufilled and returned to the "main" thread, the returned value can be used by the "main" thread. 
+Synchronous operations execute frames one at-a-time and in order. A new frame cannot start its execution before the current frame has been processed to completion. Unlike Synchronous operations, asychronous operations exist so that it is not necessary for one frame to complete, before begining execution of the next frame in the queue. 
 
-JavaScript code executes asynchronous code "deterministically", which simply means that the order of execution **can be determined**. The order in which JavaScript executes both synchronous and asynchronous operations is determined by precedence in the JavaScript "Event Loop". 
+Executing multiple operation at the same time (asynchronously) requires multiple threads. A single thread can only execute one frame at any given time. When a single application needs multiple things to execute at the same time, the JavaScript runtime allocates additional threads for each concurrent operation in a process known as multithreading. 
+
+Single-threaded applications run all frames on a single thread. With a single thread, frames have to executed in order before executing the next frame and often results in a problem referred to as "blocking" . Blocking occurs when an application is tied up with a frame and becomes unresponsive until the frame has run to completion. 
+
+In JavaScript the main thread pops frames from the call-stack and enqueues them to be executed executed asynchronously by the JavaScript runtime which will manage the child threads.  
+
+#### Asynchronous operations and DOM Manipulation. 
+
+Only the main thread can interact with the DOM. 
+
+This is necessary because unlike synchronous operations which are garunteed to happen in order, asynchronous operations are only garunteed to resolve at some point in the future. There is no garuntee that two asynchronous operations started at the same time will finish executing in the same order they were invoked and can lead to a scenario where one asynchronous operation interfers with the execution of another asynchronous operation or a "race condtion". Race condtitions are scenarios in which asynchronous operations will or could interfer with each other with undesireable consequences. 
+
+Since frames popped from the call-stack into the message queue, each operations (frame) is processed in order as long as the frame contains a synchronous operation. Any frames containing operations that should be executed asynchronous are handed off to the JavaScript compilier to be run on another thread. 
+
+Some operations like reading/write data, making HTTP request, and performing encryption/decryption are known as "demanding operations". These operations will require a significant amount of time to completed. Demanding operations are often (and should be) run on seperate threads (asynchronously) so that iterations through the event loop can be completed quickly, and new frames are popped from the call-stack without letting several frames accumulate. 
+
+
+
+
+
+
+
+
+#### Asynchronous operations and DOM Manipulation 
+
+
+
+
+
+
+
+
 
 ### Understanding through example
 
@@ -124,6 +170,7 @@ Rendering Phase:
 
 ### Microtasks 
 
+Microtasks are the most recent addition to the JavaScript event loop - with a simple goal of enabling 
 
 
 By offloading demanding and/or time-consuming operations on seperate threads, we enable the "main" application thread to execute quickly. With quick execution, new tasks added to the event loop queue can be retrieved and processed. 
@@ -155,6 +202,38 @@ This also does not mean that the browser will go through the render phase. The B
 
 
 
+
+
+
+
+processing/applying styles, processing/applying layout and rendering elements to the screen. The main thread is responsible for executing the event loop. 
+
+During the event loop,  At each iteration through the event loop, the all the tasks from the callstack are dequeued into the Event Loop. 
+
+ All tasks are processed through the event loop. 
+As the tasks are processed in the event loop, asynchonously enqued to be handled on a seperate thread, and asynchronous operations are executed on the main thread.  are parsed by the JavaScript interpreter are then either executed by the main thread, or delegated to another thread for execution. This avoids blocking the main thread, and enables it to quickly proceed through the remaining steps in the event loop (more detail to come) and respond to new tasks in the call-stack. 
+
+The key idea here is to keep the procedures/functions executed on the main thread need to be executed quickly or designated as asynchronous to avoid a single task blocking execution of the main thread. 
+
+Common examples of asyncrhonous opeations: 
+* Network requests (HTTP requests)
+* Encoding/Decoding 
+* Monitoring Input Devices 
+
+One common asychronous task in web applications is making HTTP requests. An HTTP request can execute rapidly or it could take quite some time depending on a multitude of factors. If HTTP requests were executed synchronously, the application's main thread would be tied up processing those tasks, and would be unresponsive to inputs or events, and unable to interact with the DOM the HTTP response is resolved. 
+
+However by offloading this work as an asynchronous operations, the "main" thread can execute quickly and keep the program/application responsive. 
+
+
 Synchronous functions must execute each step in the specified order. First, the `setTimeout(callback, ms)` method will pause execution on the calling thread for the specified number of milliseconds. During the halted execution, that thread would be unable to process any operations. Synchronously executed from the "main" thread of the application, the application would be rendered unresponsive. When the specified duration is reached, the callback function is executed, and the application can once again respond to user-input. 
 
 Instead, `setTimeout(callback, ms)` executes in parallel (asynchronously). First, the "main" thread queues the function to run on another thread, retaining a reference to the function invocation. While the other thread is being processed in parallel, the "main" application thread is free to continue responding to input, or processing additional instructions uninhibited. Once the promise is resolved the "main" thread yeilds to the callback provided as a parameter to the `setTimeout(callback, ms)` function. 
+
+
+
+
+### Promises 
+
+In JavaScript (ES6), the eventual value returned as a result of an asychrnous operation is handled with "promises". A promise is simply an abstraction that represents an _eventual value_. 
+
+When "fufilled" or completed, the resulting value is returned to the the "main" thread in the form as a "promise" or _eventual value_. JavaScript enables developers to define logic for what should be done with the value returned by the promise (at its completion), to the main thread using `.then()` or `async`/`await` syntax. 
