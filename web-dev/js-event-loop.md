@@ -92,7 +92,21 @@ Since frames popped from the call-stack into the message queue, each operations 
 
 Some operations like reading/write data, making HTTP request, and performing encryption/decryption are known as "demanding operations". These operations will require a significant amount of time to completed. Demanding operations are often (and should be) run on seperate threads (asynchronously) so that iterations through the event loop can be completed quickly, and new frames are popped from the call-stack without letting several frames accumulate. 
 
---------------
+## References:
+
+- [Carbon Five](https://blog.carbonfive.com/the-javascript-event-loop-explained/)
+- [Concurency Model and the Event Loop - MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
+- [Jake Archibald: In The Loop - JSConf.Asia](https://youtu.be/cCOL7MC4Pl0)
+
+-------------- END PART 1 ------------------
+
+
+
+
+
+
+
+
 
 
 
