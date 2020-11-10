@@ -50,3 +50,88 @@ Data Types in C/C++ can be broken down into three categories:
 **Void** data types represent a _valueless_ entity, and is used to represent functions that do _not_ return a value. 
 
 **Wide Characters** (keyword: `wchar_t`) represents a letter or glyph like a character (`char`) datatype, but can store a wider range of values and requires **2-4 bytes**. 
+
+#### Modifiers 
+
+Datatype modifiers are used in conjunction with the primary or primitive data types to modify the length of data that can be held. 
+
+There are four (4) datatype modifiers in C++: 
+1. Signed 
+2. Unsigned 
+3. Short 
+4. Long 
+
+Data-types that can be modified by the **signed** & **unsigned** modifiers includes _Integers, Characters, and Longs_ 
+
+Data-types that can be modified by the **long** modifier includes _Integers and Doubles_ 
+
+Data-types that can be modified by the **short** modifier **only includes** integers. 
+
+> **Signed vs. Unsigned**: _signed_ numbers contain a  a _sign bit_ which designates if the value of the number is negative or positive. C++ also supports _unsigned_ values in each of these. _Unsigned_ versions of `long`, `int`, `short`, and `char` are always treated as representing positive (e.g greater than 0) numbers. Since _unsigned_ integers and _signed_ integers consume the same amoutn of memory and the _unsigned_ integers do **not** store negative values, the maximum positive value associated with each _unsigned_ number is twice that of its _signed_ counterpart. 
+
+These modifiers can be chained or combined together in the following ways: 
+
+| datatype | size (bytes) | value range | 
+|:--- |:--- |:--- | 
+| short int | `2` | `-32,768` - `32,767` | 
+| unsigned short int | `2` | `0` - `65,535` | 
+| unsigned int | `4` | `0` - `4,294,967,295` | 
+| int | `4` | `-2,147,483,648` - `2,147,483,647` | 
+| long int | `8` | `-2,147,483,648` - `2,147,483,647` | 
+| unsigned long int | `8` | `0` - `4,294,967,295` | 
+| long long int | `8` | `-(2^63)` - `(2^63)-1` |
+| unsigned long long int | `8` | `0` - `18,446,744,073,709,551,615` | 
+| signed char | `1` | `-128` - `127` | 
+| unsigned char | `1` | `0` - `255` | 
+| float | `4` | | 
+| double | `8` | | 
+| long double | `12` |  | 
+| Wchar_t | `2` or `4` | 1 wide character | 
+
+> In case you were wondering: `(2^63)` = `9,223,372,036,854,775,808`
+
+You can see this for yourself by running the following: 
+
+```cpp
+// C++ program to sizes of data types
+#include<iostream>
+using namespace std;
+ 
+int main()
+{
+    cout << "Size of char : " << sizeof(char) 
+      << " byte" << endl;
+    cout << "Size of int : " << sizeof(int)
+      << " bytes" << endl;
+    cout << "Size of short int : " << sizeof(short int) 
+      << " bytes" << endl;
+    cout << "Size of long int : " << sizeof(long int) 
+       << " bytes" << endl;
+    cout << "Size of signed long int : " << sizeof(signed long int)
+       << " bytes" << endl;
+    cout << "Size of unsigned long int : " << sizeof(unsigned long int) 
+       << " bytes" << endl;
+    cout << "Size of float : " << sizeof(float) 
+       << " bytes" <<endl;
+    cout << "Size of double : " << sizeof(double) 
+       << " bytes" << endl;
+    cout << "Size of wchar_t : " << sizeof(wchar_t) 
+       << " bytes" <<endl;
+     
+    return 0;
+}
+``` 
+
+The output should look something like: 
+
+```
+Size of char : 1 byte
+Size of int : 4 bytes
+Size of short int : 2 bytes
+Size of long int : 8 bytes
+Size of signed long int : 8 bytes
+Size of unsigned long int : 8 bytes
+Size of float : 4 bytes
+Size of double : 8 bytes
+Size of wchar_t : 4 bytes
+```
