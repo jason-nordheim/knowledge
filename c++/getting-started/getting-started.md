@@ -151,3 +151,80 @@ Numbers explicitly defined (e.g.`253`) in C++ applications are known as **Numeri
 Numbers with a decimal value include floats (unsigned/signed) and doubles. Any _numeric constant_ declared with a decimal value is stored as a double (8 bytes of memory) by default. 
 
 Larger _Numeric constants_ can be shortened and declared using teh `E` notation, which defines a number in terms of powers of 10 (e.g. `234.5E12` would indicate 234.5 * 10^12 and 234.5E-12 would be 234.5 * 10^-30). 
+
+# Syntax 
+
+### Free form 
+
+C++ is a known as a _free form_ programming language. This is in reference to the way that whitespace is processed by the compiler. 
+
+In most places, an end-of-line is treated like a blank, and blanks tabs, or end of line characters are processed as a single blank. However, this does not apply to _string constants_ (e.g. `"I am a string constant"`), which must be placed entirely on one line. Multiline _string constants_ would use the new line character _string constant_ `\n`. 
+
+Exceptions: 
+* _string constants_ 
+* single line comments 
+* preprocessor directives 
+### Comments 
+
+Comments in C++ look just like Java comments: 
+* Single line comments are made using `//` 
+* Multi-line comments begin with `/*` and terminate with `*/`
+
+#### Variables & Statements 
+
+**Variables** hold **one** (1) item of a given type. A variable is comprised of three parts: 
+1. _type_ the data-type of the variable (e.g. integer, character, float, double, etc.) 
+2. _name_  a defined name of a variable (e.g. `disk`, `amount`, etc.)  
+3. _value_ what the variable is holding (e.g. `6`, `"a"`)
+
+
+Creating a variable is known as "declaring" a variable, or as a "variable declaration statement". A variable **must** be declared with a _type_, a _name_, but the _value_ is optional. 
+
+Once declared, variable cannot change data types, but can be "re-assigned" to a new value. Assigning a new value to a variable will replace the existing value. 
+
+
+```cpp
+// variable declaration 
+// declare type, then name, and terminate with semi-colon
+int x; 
+```
+
+**Variable names must start with a letter**. After the first character (letter), variables names can be comprised of as letters, digits, and underscores. Variable names **cannot contain spaces**. 
+
+Casing matters. C++ is case-sensitive, so variables with the same name and different cases are treated as different variables (e.g. `Size` and `size` are both valid names, but will represent different variables since the `s` character is capitalized in one case, and lowercase in the other). 
+
+
+Variables of the _same type_ can be declared together, separated by commas: `double width, height, length;`. 
+
+Once a variable has been _declared_, it can be assigned and re-assigned value as often as required as long as it is of the same _type_ and has a value within the range of the declared data _type_. 
+
+Changing a value is done through _assignment statements_ which do not include the type declaration. 
+
+```cpp
+// variable assignment 
+int x = 0;
+
+// variable re-assignment 
+x = 3; // notice: no type declaration 
+```
+#### Initialized vs. Uninitialized Variables 
+
+**Initialization** is the process in which variables are _declared and **initialized**_. 
+
+**Initialized** variables are _declared_ with a value. 
+
+**Uninitialized** variables are variables _declared_ with a type, but no value. 
+
+```cpp 
+// declaring an uninitialized variable 
+int x; 
+// declaring an initialized variable 
+int y = 0; 
+```
+
+Variables of the same type can be declared concisely in a single line separated by commas (`,`)
+
+```cpp
+// declaring multiple initialized integers 
+int w = 0, n = 1;
+```
