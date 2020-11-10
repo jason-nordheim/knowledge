@@ -164,13 +164,14 @@ Exceptions:
 * _string constants_ 
 * single line comments 
 * preprocessor directives 
+
 ### Comments 
 
 Comments in C++ look just like Java comments: 
 * Single line comments are made using `//` 
 * Multi-line comments begin with `/*` and terminate with `*/`
 
-#### Variables & Statements 
+#### Variables  
 
 **Variables** hold **one** (1) item of a given type. A variable is comprised of three parts: 
 1. _type_ the data-type of the variable (e.g. integer, character, float, double, etc.) 
@@ -182,7 +183,6 @@ Creating a variable is known as "declaring" a variable, or as a "variable declar
 
 Once declared, variable cannot change data types, but can be "re-assigned" to a new value. Assigning a new value to a variable will replace the existing value. 
 
-
 ```cpp
 // variable declaration 
 // declare type, then name, and terminate with semi-colon
@@ -191,7 +191,9 @@ int x;
 
 **Variable names must start with a letter**. After the first character (letter), variables names can be comprised of as letters, digits, and underscores. Variable names **cannot contain spaces**. 
 
-Casing matters. C++ is case-sensitive, so variables with the same name and different cases are treated as different variables (e.g. `Size` and `size` are both valid names, but will represent different variables since the `s` character is capitalized in one case, and lowercase in the other). 
+**Casing matters** 
+
+C++ is case-sensitive, so variables with the same name and different cases are treated as different variables (e.g. `Size` and `size` are both valid names, but will represent different variables since the `s` character is capitalized in one case, and lowercase in the other). 
 
 
 Variables of the _same type_ can be declared together, separated by commas: `double width, height, length;`. 
@@ -228,3 +230,62 @@ Variables of the same type can be declared concisely in a single line separated 
 // declaring multiple initialized integers 
 int w = 0, n = 1;
 ```
+
+### Operators, Expressions and Arithmetic 
+
+The basics of working with numbers includes performing arithmetic, evaluating operators and expressions. 
+
+* Numbers can be added together using the _addition operator_ `+` (e.g `x + y`). 
+* The difference between two numbers (subtraction) can be found using the _subtraction operator_:`-` (e.g `x - y`). 
+* The product of numbers can be calculated using teh _multiplication operator_ `*` (e.g. `x * y`).
+* The quotient of a number can be found using the _division operator_ `/` (e.g. `x / y` ). When dividing integer values, the _decimal portion of the number will be discarded_. In other words; getting the quotient of `7/4` would result in `1`, not `1.75`.   
+* The **remainder** (aka **modulus**) can be found by applying the _modulus operator_ `%`. This will return the amount remaining when after a quotient is calculated (e.g `14 % 3` will be return `2` since `14` divided by `3` can only go into `14` three times (up to `12`), leaving a _remainder_ of `2`). 
+
+Operators are always executed from _left to right in the order of precedence_, unless precedence is overridden with parenthesis. 
+
+#### Shorthand Operations 
+
+Arithmetic operators is enable changing a value of a variable, but arithmetic operations such as _operator assignment_ (e.g. `n = n + 5` or `x = x + e` ) , _incrementing_ (e.g. `n = n + 1`) and _decrementing_ (e.g. `n = n - 1`) are performed so commonly that C++ has a shorthand to declare these more concisely. 
+
+```cpp
+int x = 10 
+/* Integers can be incremented by 1 using x++ */
+x++; // same as `x = x + 1` => 11
+
+/* Integers can be decremented by 1 using x-- */
+x--; // same as `x = x - 1` => 10 
+x--; // => 9 
+
+/* Operator assignment can be used to shorten the syntax 
+ * for an of the binary operators: +, -, *, etc. */
+x += 6; // same as `x = x + 6` => 15 
+x *= 2; // same as `x = x * 2` => 30 
+x /= 5; // same as `x = x / 5` => 6 
+```
+
+### Variable Constants 
+
+A _constant_ is a variable that cannot change. _Constants_ are initialized with the same syntax as regular variables, but are prefixed with the `const` keyword: 
+
+```cpp 
+// constant declaration 
+const int pi = 3.1415926536; 
+```
+
+It is a good practice to use constants whenever there is a need to hold a value that should not, or will not change. 
+
+### Arrays  
+
+Arrays are data structures used to contain a _collection of values_. Each value in an array is referred to as an _element_. Each element or value of an array is referred to by it's _index_. Arrays have "zero based indices" because the first element in an array is at index `0` not index `1` (that would be the second element in the array). 
+
+**Rules of Arrays (in C++):** 
+* Arrays must be declared **before** they can be used.  
+* Every variable (e.g. "element") in the array must be of the **same type** (data type). 
+* Arrays have **fixed sizes** (e.g. the size cannot be changed after it is created) 
+
+```cpp
+// declaring an integer array with space for 10 integers
+int myArray[10]; 
+```
+
+> The _single point of modification_ principle of software design states that "when you make an arbitrary decision while writing software, wherever you can, make it so that you can change that decision by changing one line" 
