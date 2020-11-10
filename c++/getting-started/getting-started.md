@@ -340,3 +340,22 @@ A **nested statement** is a **compound statement** has single statements, **and 
     }
 }
 ```
+
+#### Scope 
+
+**Scope** defines which parts of the application have access. 
+
+#### Scope in compound statements 
+
+With **compound statements** and **nested statements**, any variable declared within the compound/nested statement is **only** accessible from the point at which it was declared/initialized/defined to the end of the compound statement. 
+
+```cpp 
+{
+    int p, q, x = 5; 
+    {
+        int x = 9; 
+        p = x; 
+    }, 
+    q = x; 
+}
+```
