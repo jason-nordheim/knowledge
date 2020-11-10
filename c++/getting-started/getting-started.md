@@ -359,3 +359,66 @@ With **compound statements** and **nested statements**, any variable declared wi
     q = x; 
 }
 ```
+
+## Functions 
+
+**Functions** are sets of prescribed expressions/operations. Using a function is referred to as "calling a function" or a "function call". 
+
+Functions can (but do not have to) receive inputs. The input values to a function are known as "arguments" or "parameters" interchangeable. 
+
+Functions are defined by: 
+1. **return type** - data type of what is returned by the function 
+2. **name** - a name that provides a reference to the function. 
+3. **arguments** (parameters) - a list of values (and their types) provided as input to the function. 
+4. **body** - the sequence of statements to be executed
+
+```cpp
+/* function named `addOne` that takes a integer (parameter) called `n` and adds 1 (function body), and then returns the resulting value */ 
+int addOne(int n) 
+{
+    return n + 1 
+}
+```
+
+**Every** parameter/argument must be declared with a type. If all the parameters have the **same type**, the function definition must still explicitly state the type for each argument. 
+
+```cpp
+// invalid (y must have a type)
+int add(int x, y)
+{
+    return x + y 
+}
+// valid 
+int add(int x, int y)
+{ 
+    return x + y 
+}
+```
+
+Functions cannot be used before their definition. If using a function within another function, the nested function must be declared first. 
+
+```cpp
+// valid 
+  int sqr(int x)
+  {
+    return x*x;
+  }
+  int fourthPower(int x)
+  {
+    return sqr(sqr(x));
+  }
+// invalid 
+  int fourthPower(int x)
+  {
+    return sqr(sqr(x));
+  }
+
+  int sqr(int x)
+  {
+    return x*x;
+  }
+```
+
+### Function Scope 
+
+Like compound statements, functions are subject to scoping. Variables within one function do **not** have access to the variables within another function.
