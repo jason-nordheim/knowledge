@@ -289,3 +289,54 @@ int myArray[10];
 ```
 
 > The _single point of modification_ principle of software design states that "when you make an arbitrary decision while writing software, wherever you can, make it so that you can change that decision by changing one line" 
+
+### Statements 
+
+_Statements_ are _commands_. They tell the computer to do something. Defining, assigning, and re-assigning variables is done through _statements_ and every _statement_ in C++ **must** be terminated with a semi-colon (`;`). 
+
+> Note: Variable declaration, variable assignment/re-assignment, expressions, operations, and arithmetic are all examples of statements. 
+
+Statements are executed from the **top-to-bottom**, and **right-to-left**. In other words, the expression on the right side of the `=` sign is computed, _then_ assigned to the variable on the left side. 
+
+```cpp
+// variable declaration  
+int x, y; 
+// variable assignment 
+x = 40;  
+y = x + 10; // y = 50 
+```
+
+When assigning (or re-assigning variable) to the another value (e.g. `x = y`), the value associated with the variable on the _right side_  is assigned to the variable on the _left side_ based upon it **current value**. If the variable on the _left side_ receives a new value later on, the variable on the right will **not** not change. 
+
+```cpp
+int y, x; 
+x = 0; 
+y = x; 
+x = 10; 
+/* `y` still `= 0` because `x = 0` when the assignment statement for `y` was executed */ 
+```
+
+#### Compound & Nested Statements 
+
+A **compound statement** is a statement that defines more than one operation or command that should be executed together. Compound statements are denoted with curly braces (`{}`) to indicate the statements that need to executed together. An opening curly brace (`{`) defines the start compound statement, and a closing curly brace (`}`) defines the end of a compound statement. 
+
+```cpp
+// compound statement declaration & initialization 
+{
+    x = 2; 
+    y = 0; 
+}
+```
+
+A **nested statement** is a **compound statement** has single statements, **and another compound statement** inside. 
+
+```cpp
+// nested compound statement 
+{
+    int x = 0; 
+    {
+        int y = 1; 
+        int g = 34; 
+    }
+}
+```
