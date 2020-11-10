@@ -135,3 +135,19 @@ Size of float : 4 bytes
 Size of double : 8 bytes
 Size of wchar_t : 4 bytes
 ```
+
+##### Overflow and Numeric Constants 
+
+Since primitive data types have a specified size, they can never be assigned a value in excess of that size. Attempting to assign a value beyond the available range will result in an error known as an "overflow error".  
+
+> **overflow** - the scenario in which a primitive data type is assigned a value beyond the allocated range 
+
+When declaring a number explicitly in C++ applications there are a few things to keep in mind: 
+1. commas (`,`) should always be omitted. 
+2. integers are assumed (if not explicitly stated) to have an `int` data type, and will be subject to the limitation of the `int` range. 
+
+Numbers explicitly defined (e.g.`253`) in C++ applications are known as **Numeric constants**. The range of values for a _numeric constant_ can be changed from the default integer (`int`) data type to a long using a `L` after the number (e.g. `123456789L`), adding a `U` indicates an unsigned integer (e.g. `123456789U`) and to indicate an unsigned long `UL` is used (e.g. `123456789UL`). 
+
+Numbers with a decimal value include floats (unsigned/signed) and doubles. Any _numeric constant_ declared with a decimal value is stored as a double (8 bytes of memory) by default. 
+
+Larger _Numeric constants_ can be shortened and declared using teh `E` notation, which defines a number in terms of powers of 10 (e.g. `234.5E12` would indicate 234.5 * 10^12 and 234.5E-12 would be 234.5 * 10^-30). 
