@@ -499,3 +499,13 @@ Put another way, functions only have access ("are scoped to") their distinct fra
 Imagine two functions; function a and function b. The first function (function a) will have its own set of parameters ("arguments") and may also have variables within the function body. The second function (function b), cannot access variables within the first function (function b). At the same time, the other function (function b) cannot access the variables of the first function (function a). 
 
 > Scoping in function is a result of frames 
+
+## C++ Directives, 
+
+C++ comes with a library of common functions used in most C++ application. **Directives** or **Preprocessor directives** allow concise references to functions within these libraries. _Directives_ or _preprocessor directives_ are named references to those pre-built libraries. 
+
+> Any lines within a C++ file that begins with `#` is called a _directive_ or a _preprocessor directive_. 
+
+```cpp
+# include <stdio> 
+```
