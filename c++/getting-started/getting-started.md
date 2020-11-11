@@ -524,3 +524,25 @@ To turn `.cpp` (C++) files into executable files, the _preprocessor_ takes the `
 # include <stdio> 
 /* the statement above would be replaced by the  preprocessor, with the library that they represent */
 ```
+
+### C++ Standard Libraries (Directives)
+
+Common statements an operations are included as _directives_. Instead of every developer creating libraries of code to do the _same thing_, these libraries have pre-built functions that have been written according to best practices, and make common operations dramatically easier and faster. 
+
+There are many, but here are some highlights to get started:
+
+1. The math (`#include <cmath>`) library: 
+    * `sqrt(x)` will return the approximate square root of `x`  
+    * `pow(x,y)` will return `x` raised to the power of `y` 
+    * `abs(n)` will return the absolute value of integer `n` 
+    * `fabs(x)` will return the absolute value of real number `x` 
+
+2. The algorithms `#include <algorithm>` library: 
+    * `max(u,v)` will return the larger numeric value (`u` or `v`)
+    * `min(u,v)` will return the smaller numeric value (`u` or `v`)
+
+
+
+
+
+
