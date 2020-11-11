@@ -488,3 +488,14 @@ First, the `sqr(x)` frame will return `25` (e.g. `5 * 5`). When the value has be
 Second, the `cube(y)` frame will return `125` (e.g. `5 * 5 * 5`), and that frame will also get destroyed. Leaving one frame. 
 
 Third and last, the values returned by `sqr(x)` and `cube(y)` functions will be used to compute `3125` (e.g `25 * 125`), and the final frame will be destroyed. 
+
+
+### Scope and Functions 
+
+Like compound statements, functions also having scoping. Abstractly, variables within the function body of one function do **not** have access to the variables within another any other function.
+
+Put another way, functions only have access ("are scoped to") their distinct frame. 
+
+Imagine two functions; function a and function b. The first function (function a) will have its own set of parameters ("arguments") and may also have variables within the function body. The second function (function b), cannot access variables within the first function (function b). At the same time, the other function (function b) cannot access the variables of the first function (function a). 
+
+> Scoping in function is a result of frames 
