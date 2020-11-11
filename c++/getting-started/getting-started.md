@@ -509,3 +509,18 @@ C++ comes with a library of common functions used in most C++ application. **Dir
 ```cpp
 # include <stdio> 
 ```
+
+### Directives & Compilation 
+
+Machine code is the actual instructions that a computer executes. C++ code written in `.cpp` files (the file extension for C++) cannot be executed on any computer.
+
+The problem with Machine code is that is can be very difficult to read and write. In machine code, simple/common operations are often long and complicated. To make this task less cumbersome, most code is written in "high-level" programming languages. Languages like C++ are considered "high level" because that they _must be compiled to machine code_ **before** they can be executed. 
+
+To convert a high-level code file like C++ (`.cpp` files) go through a two (2) stage compilation process. First the `.cpp` file is passed to a _preprocessor_. Second, the output from the _preprocessor_ is passed to a _compiler_.  
+
+To turn `.cpp` (C++) files into executable files, the _preprocessor_ takes the `.cpp` file and parses each line for _directives_. As each directive is parsed, the _preprocessor_ replaces each _directive_ with the code from the library named in the directive and returns a new file which is run through the _compiler_ to create an executable (runnable) that can be run on a computer. 
+
+```cpp 
+# include <stdio> 
+/* the statement above would be replaced by the  preprocessor, with the library that they represent */
+```
