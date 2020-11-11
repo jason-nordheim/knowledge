@@ -419,6 +419,72 @@ Functions cannot be used before their definition. If using a function within ano
   }
 ```
 
-### Function Scope 
+## Frames 
 
-Like compound statements, functions are subject to scoping. Variables within one function do **not** have access to the variables within another function.
+A **frame** is created when a function is called. Frames hold the values of a parameter(s) as well as any variables declared within the function and what the function will do next. 
+
+Given the following: 
+
+```cpp 
+// returns x to the power of 2 
+int sqr(int x) 
+{
+    return x*x 
+}
+// return y to the power of 3 
+int cube(int y)
+{
+    return y * y * y 
+}
+// uses the functions above 
+int fifthPower(int z) 
+{
+    return sqr(z) * cube(z)
+}
+
+int result = fifthPower(5)
+```
+
+1. In order to determine the value of result, the computer would first create a frame that holds the value `int z = 5` (the parameters to the function) as well as a reference to what is going to be done next `return sqr(z) * cube(z)`. 
+
+```
+At this point there is one (1) frame in memory. 
+* frame 1 `fifthPower()`
+    * arguments `int z = 5`, 
+    * next operation: `sqr(z) * cube(z)`
+```
+
+Following execution the computer would proceed to create another frame to handle the `cube(z)` function. This frame would contain the function arguments; `int y = 5`, as well as the next operation; `y * y * y`.  
+
+```
+At this point there is two (2) frames in memory. 
+* frame 1 `fifthPower()`
+    * arguments `int z = 5`, 
+    * next operation: `sqr(z) * cube(z)`
+* frame 2 `cube(y)` 
+    * arguments `int y = 5` 
+    * next operation: `y * y * y` 
+```
+
+Still following execution order, the computer would proceed to create another frame to handle the `sqr(x)` function. This frame would contain the function arguments `int x = 5` and the next operation: `x * x`. 
+
+```
+At this point there is three (3) frames in memory. 
+* frame 1 `fifthPower()`
+    * arguments `int z = 5`, 
+    * next operation: `sqr(z) * cube(z)`
+* frame 2 `cube(y)` 
+    * arguments `int y = 5` 
+    * next operation: `y * y * y` 
+* frame 3 `sqr(x)` 
+    * arguments `int x = 5` 
+    * next operation: `x * x` 
+```
+
+Now the computer has created all the frames necessary to calculate `int result = fifthPower(5)`. The frames will be executed reverse order: 
+
+First, the `sqr(x)` frame will return `25` (e.g. `5 * 5`). When the value has been returned, that frame will be destroyed. Leaving two (2) frames. 
+
+Second, the `cube(y)` frame will return `125` (e.g. `5 * 5 * 5`), and that frame will also get destroyed. Leaving one frame. 
+
+Third and last, the values returned by `sqr(x)` and `cube(y)` functions will be used to compute `3125` (e.g `25 * 125`), and the final frame will be destroyed. 
