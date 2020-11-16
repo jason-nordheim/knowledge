@@ -41,12 +41,12 @@ A REST API for this blog application would have a `/users`" endpoint and a `/fol
 3. CREATE - POST `/users/`
     * body (JSON): 
     ```js 
-    { user: { firstName , lastName password, dob}
+    { user: { firstName , lastName password, dob}}
     ```  
 4. UPDATE - PATCH `/users/:id` 
     * body (JSON): 
     ```js 
-    { user: { firstName , lastName password, dob}
+    { user: { firstName , lastName password, dob}}
     ```   
 5. DELETE - DELETE `/users/:id` 
 
@@ -57,12 +57,12 @@ The endpoint `/follows/`
 3. CREATE - POST `/follows`
     * body (JSON): 
     ```js 
-    { follow: { subscriber , user} 
+    { follow: { subscriber , user}} 
     ```  
 4. UPDATE - PATCH `/follows/:id` 
     * body (JSON): 
     ```js
-    { follow: { subscriber , user} 
+    { follow: { subscriber , user}} 
     ```   
 5. DELETE - DELETE `/follows/:id` 
 
