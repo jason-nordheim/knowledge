@@ -15,18 +15,18 @@ GraphQL exposes a single endpoint that responds to HTTP requests for data (Graph
 There is a blog application that has the following objects and relationships: 
 * `user` - represents a user model. 
     * properties: 
-        * `id` _integer_ (primary key, auto-incrementing)
-        * `firstName` _string_ 
-        * `lastName` _string_ 
-        * `password_digest` _string_ 
-        * `dob` _date-time_ 
+        * `user.id` _integer_ (primary key, auto-incrementing)
+        * `user.firstName` _string_ 
+        * `user.lastName` _string_ 
+        * `user.password_digest` _string_ 
+        * `user.dob` _date-time_ 
     * relationships: 
         * has-many `followers` 
 * `follow` - represents a subscription to another user's blog posts 
     * properties: 
-        * `id` _integer_ (primary key, auto-incrementing)
-        * `subscriber` _integer_ (foreign key, user who "follows" another user)
-        * `user` _integer_ (foreign key, user that is "followed")
+        * `follow.id` _integer_ (primary key, auto-incrementing)
+        * `follow.subscriber` _integer_ (foreign key, user who "follows" another user)
+        * `follow.user` _integer_ (foreign key, user that is "followed")
     * relationships: 
         * has-many `users`
         * belongs-to `users` 
