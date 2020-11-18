@@ -31,13 +31,35 @@ Variables are divided into two broad categories:
 * 'value types' (e.g. "primitive types") 
 * 'reference types'. 
 
-Value-types store simple pieces of information, while reference-types group related information into a single container (variable). The categories improve improve the efficiency of programs, by changing the way in which the computer stores and retrieves the information (values) inside variables. 
+The difference between _value type_ variables and _reference type_ variables is in the way the computer stores the information contained within the variable. 
 
-Abstractly, Value-type ("primitive") variables are stored directly in memory, however since reference types store related pieces of information together and usually require greater storage space (memory), computers will store the information contained within reference-types using _pointers_, which hold the actual memory address (location in memory) of the value (information) contained within the reference-type variable.
+Value-type (or "primitive" variables) are stored allocated space in memory on the stack. Distinct spaces in the memory (more specifically the _stack_), are reserved, then the value is places at that specific place in memory. When value-types are copied into other value-type variables, the computer repeats the process; creating a new space in memory, and then copying the value from the first location to the second. If any changes were to happen to the original variable, or the copied version - only the modified (e.g. "mutated") variable is affected.  The copy's value would remain the same. 
 
-##### Value types 
+Reference-types variables do not directly store their values in the stack. Instead, reference-type variables place result in two memory allocations. First memory is allocated in a location known as the "heap". The computer than copies the specific location in the heap that holds the value of the new variable, and places a "pointer" or reference in the "stack", that "references" or "points to" the memory address within the heap where the corresponding value is stored. Because the variable stored in the stack is just a pointer, referencing the actual value location, copying a reference type variable copies the pointer (or memory address) of the value, and could result in multiple variables referencing the same value. 
 
-* Common **value types**
+* Includes: Classes, Objects, Arrays, Indexes, Interfaces  
+
+##### Differentiating between the two main types 
+
+Variables are stored differently because of the way memory allocation works. Allocating memory to the "stack" can _only_ be allocated at compile time. Once the application is running, the amount of memory allocated to the stack is fixed. This is perfect for value-type variables because they have known memory requirements. 
+
+* The Stack = static memory allocation 
+    * fastest memory location. 
+    * memory allocated at compile time
+    * directly stores _value type_ variables 
+    * stores pointer(s) or references to the value of _reference type_ variables  
+
+Memory in the "heap" is more dynamic. Memory allocation can be defined at runtime, enabling a variable amount of space to hold reference type, and allowing reclamation of memory when it is no longer needed. 
+
+The Heap = dynamic memory allocation 
+    * memory allocated at run-time 
+    * slower than variables placed in the stack 
+    * stores the value associated with a _reference type_
+
+
+##### Primitive Types 
+
+* Common **value types** variables include: 
     * text
         * **character** (aka "char") is a single unicode character (e.g. `a`, `Z`, `!`, etc.), and are most commonly defined between single quotes (e.g. `'a'`, `'Z'`, `'!'`, etc.)
         * **strings** are a sequences of characters commonly defined between double-quotes (e.g. `"Jason"`, `"Cocoa"`, `"soccer"`, `"The quick brown fox jumped over the lazy sheep dog"` etc.)
@@ -76,3 +98,45 @@ Typically modifiers are optional, and number variables are presumed to be "unsig
 
 * Signed - specifies a number variable can be positive _or_ negative 
 * Unsigned - specifies a number variable will _always_ be positive 
+ 
+#### Callable Units 
+
+The term "callable units" is an umbrella term describing the grouping of a specific sequence of statements and expressions that _can_ be "called" or executed repeatedly. In software, callable units allow developers to repeat a sequence of instructions one or more times in exactly the same way each time. 
+
+Callable units are broken down into sub-categories known as "procedures", "methods", "functions", "routines" and "subroutines". Every type of callable unit (procedures, methods, function, routines and subroutines) offers the ability to repeated execute the same sequence of instruction, but have have varying characteristics and features. 
+
+> It is important to note that not all programming languages make use of all types of callable units. Additionally, the definition of each can vary slightly between languages. Definitions stated here are designed to provide a high-level understanding that applies in the scenarios new developers are likely to encounter, but could vary depending on the specific programming language or framework being used. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Compilation  
+
+
+  
+Differentiating between the two has limited value, but if you're reading this, you're probably curious. 
+  
+  * **Statement** - A single unit of work in a program 
+  
+  * Expression
+  
+  * 
+  
+  * 
+
+* **Block** 
+  
+  * A _scoped_ combination of _statements/expressions__ that represent the instructions necessary to accomplish a task. 
+
+
