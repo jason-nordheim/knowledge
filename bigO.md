@@ -4,7 +4,7 @@ Presentation by: Evan Greer
 * dye-prying co-hort 
 
 ## Big O Notation 
-A mathematical notation to describe the limiting behaviro of a function as the argument tends toward a particular value or infinity. 
+A mathematical notation to describe the limiting behavior of a function as the argument tends toward a particular value or infinity. 
 
 When analyzing algorithms, Big O favors **worst case scenarios**; in other words, the most time-intensive (or space-intensive) result. This is really only relevant in functions that are "bail out" or return early if a specific scenario occurs. 
 
