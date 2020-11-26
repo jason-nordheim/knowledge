@@ -139,14 +139,33 @@ Mathematically, asymptotic behavior has to do with limiting the function definit
 
 * `f(n) = 3n + 36`, would be described as `f(n) = n` → because the execution will grow directly in relation to the input size. 
 * `f(n) = 256`, would be described as `f(n) = 1` → because the execution will be constant regardless of the input size 
-* `f(n) = n*n + 5n + 3` would be described asymptotically as `f(n) = n*n` because `n*n` will grow faster than `3n` as the input increases 
-* `f(n) = n*n*n + 231n + 69` would be described as `f(n) = n*n*n` → because `n*n*n` is the fastest growing term. 
+* `f(n) = n² + 5n + 3` would be described asymptotically as `f(n) = n²` because `n²` will grow faster than `3n` as the input increases 
+* `f(n) = n³ + 231n + 69` would be described as `f(n) = n³` → because `n³` is the fastest growing term. 
 
-## Complexity 
+## Transitioning to Big O notation 
 
 Asymptotic behavior essentially drops all the decorative constants from the mathematical function representing the execution steps of the algorithm. Given this behavior we can conclude: 
-* A program that does not require any looping 
+* A algorithm that does not require any looping will have a complexity of `f(n) = 1` since the number of instructions is constant regardless of the size of the input
+* A algorithm with a single loop, which loops from `1` to `n` will have a complexity of `f(n) = n` since it will perform the instructions inside the loop a constant number of times. 
+* An algorithm with a nested loop (a loop inside another loop) will have a complexity of `f(n) = n²` since the execution time will increases by a factor of `n` as the size of the input (`n`) increases in size. 
 
+Now to take everything that we've discussed an put it in the computer science language of Big O is pretty simple. Essentially we've already done it.
+* `θ(1)` 
+    * pronounced "O of 1" or "theta of 1" 
+    * represents algorithms with a constant number of instructions 
+    * alternatively, you could say _the size of the input does **not** affect the execution time of the algorithm_ 
+    * mathematically, we would represent this as  `f(n) = 1` 
+* `θ(n)`
+    * pronounced "O of n" or "theta of n" 
+    * represents an algorithm that's execution time grows in direct proportion to the size of the input 
+    * alternatively, _the size of the input directly affects the algorithms execution time_
+    * mathematically, we would represent this as `f(n) = n`
+* `θ(n²)`
+    * pronounced "O of n squared" or "theta of n squared" 
+    * represents an algorithm that executes proportionally at a rate of n squared compared to the input siz 
+    * mathematically, we would represent this as `f(n) = n²` 
+
+... and this would continue as the exponents representing the function grows.
 
 ## References 
 
