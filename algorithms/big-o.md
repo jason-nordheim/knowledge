@@ -167,6 +167,13 @@ Now to take everything that we've discussed an put it in the computer science la
 
 ... and this would continue as the exponents representing the function grows.
 
+Once we have an algorithm in terms of theta or big O - we have the algorithms _time complexity_ or _complexity_. The `θ(1)`, `θ(n)`, and `θ(n²)` all occur so commonly that we have names for algorithms that execute at this level of complexity/ 
+* `θ(1)` is referred to as a "constant time" algorithm since the execution time is constant regardless of the size of the input 
+* `θ(n)` is referred to as a "linear time" algorithm since execution time grows in direct proportion to the input (`n`)
+* `θ(n²)` is referred to as quadratic time since the execution time grows in a quadratic fashion as the input increases. 
+
+==== LOG === 
+
 ## References 
 
 * Dionysis Zindros 
