@@ -100,7 +100,53 @@ So given an input of `n` the `maximum` function (we'll abbreviate that to `f` he
 
 ## Worst-case Scenario
 
-As we inspect these operations, we generally take an approach called "worst case scenario" in which we evaluate the algorithm with an input that would require the greatest number of operations to complete. 
+As we inspect these operations and inspect the complexity of the algorithm, it is important to consider the "worst case scenario". In the worst case scenario, we we evaluate the algorithm with an input that would require the greatest number of operations to complete. 
+
+In the case of the `maximum` function,  this has to do with the conditional statement inside the `for` loop. 
+```js
+if(arr[i] > max) {
+    max = arr[i]
+}
+```
+While the lookup of the element at `arr[i]` will occur for every element (input), the second lookup and assignment would only occur if the condition evaluates to `true` (e.g the integer at `arr[i]` is greater than the value associated with the `max` variable). Within the `if` body, are 2 more operations. First, another lookup of the value of the element at `arr[i]` and another to assign that value to `max`. 
+
+In the _worst case scenario_ approach, we take the scenario that would involve the most steps/operations. In this case, that scenario would involve the most operations would be when the `arr`'s elements were sorted from smallest to largest. If the array was sorted in this manner, the operations within the `if` body would occur for each element in the `arr`. We can adjust the mathematical representation of this so that `f(n) = 7 + 4n + 2n` or `f(n) = 7 + 6n`.  
+
+## Asymptotic behavior 
+
+Algorithms that execute faster with a larger input, will often execute faster will smaller inputs as well. In complexity analysis, we only are concerned with how the function (`f`) behaves as the input (`n`) grows - so we tend to ignore the parts of the algorithm that do grow slowly with increased inputs, instead we focus on the parts that grow proportionally to the input. In the case of the mathematical function defined earlier (`f(n) = 7 + 6n`), `7` is constant regardless of the input size, however the `6n` grows directly as the size of the input grows larger. 
+
+We refer to the `7` as an "initialization constant" since the steps involved are setup operations that will occur independent of the operation size. There are other initialization constants when it comes to programming, like initialization of a virtual machine in the case of Java. Since we are not concerned with the things that occur regardless of the input, we typically drop initialization constants from our mathematical function representing the algorithms complexity.  
+
+After removing the initialization constants, we  are left with a mathematical formula of `f(n) = 6n` to represent the complexity of the `maximum` function in relation to the input size. 
+
+Since the steps associated with the multiplier (`6n`) are related to the implementation outlined in JavaScript, this could vary depending on the implementation language or how a complier processes the high-level code into machine code. For example, array lookups in JavaScript, Pascal, and C are all executed differently. In C, `arr[i]` does not check to see if `i` is within the declared array size, while in Pascal it does. 
+
+The statement in Pascal 
+```pp
+max = arr[i] 
+```
+Would be equivalent to this statement in C
+```c
+if ( i >= 0 && i < n ) {
+    max = arr[i];
+}
+``` 
+
+Given this information, it is reasonable to assume that different programming languages would have different implications in terms of the number of actual steps executed for a given algorithm, so after removing our initialization constants, we remove our multiplier from our mathematical formula, resulting in a much simpler mathematical function: `f(n) = n`. This process of dropping all factors (multipliers) and removing initialization constants, and defining the algorithms behavior in terms of the largest growing term is referred to as "asymptotic behavior". 
+
+Mathematically, asymptotic behavior has to do with limiting the function definition to `f(n)` as it trends toward infinity. This results in a few potential shapes for our mathematical function. 
+
+* `f(n) = 3n + 36`, would be described as `f(n) = n` → because the execution will grow directly in relation to the input size. 
+* `f(n) = 256`, would be described as `f(n) = 1` → because the execution will be constant regardless of the input size 
+* `f(n) = n*n + 5n + 3` would be described asymptotically as `f(n) = n*n` because `n*n` will grow faster than `3n` as the input increases 
+* `f(n) = n*n*n + 231n + 69` would be described as `f(n) = n*n*n` → because `n*n*n` is the fastest growing term. 
+
+## Complexity 
+
+Asymptotic behavior essentially drops all the decorative constants from the mathematical function representing the execution steps of the algorithm. Given this behavior we can conclude: 
+* A program that does not require any looping 
+
 
 ## References 
 
