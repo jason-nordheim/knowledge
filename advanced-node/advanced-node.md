@@ -9,7 +9,7 @@ The _"Pyramid of Doom"_ is an anti-pattern in software design , and is also know
 ## Node.js is Asynchronous 
 
 ![async vs sync](https://miro.medium.com/max/2776/1*AkRJl7swYFvm-XNTqvxpJQ.png) 
-
+ 
 In JavaScript (and most other programming languages), the developer has the ability to dictate when each block of code is executed. There are two primary categories or methods in which code is executed on a computer. 
 1. Synchronously
 2. Asynchronously
@@ -63,6 +63,7 @@ Instead of passing the result back, the CPS version of the `hideString` function
 ### Callback Pattern 
 
 ![callback](https://i0.wp.com/www.zeptobook.com/wp-content/uploads/2019/09/javascript_callbacks.png?fit=960%2C440&ssl=1) 
+
 
 The **callback pattern** is one of the most commonly software patterns implemented in JavaScript and is very similar to Continuation passing style (CPS) reviewed above. For a function to truly implement the _callback pattern_, it uses CPS, but also executes in an asynchronous fashion. 
 
@@ -138,7 +139,9 @@ two seconds later...
 
 ### Sequential Callback Execution 
 
+
 ![Sequence](https://img1.pnghut.com/3/4/14/JAfyn0aUbx/filename-extension-information-fibonacci-number-area-chatbot.jpg) 
+
 
 When a callbacks are nested inside one or more callback, each callbacks execution is delayed until the parent function has completed its execution. When done repeatedly, we call this _sequential callback execution_, because each callback is delayed by the parent function finishes executing. 
 
@@ -172,9 +175,11 @@ four seconds ⏱
 ```
 > Notice that the JavaScript interpreter continues executing the remaining synchronous code, while the asynchronous operations are executed at a specified interval ("a delay") as dictated by the first value provided to the `delay` function.
 
+
 #### The Pyramid of Doom 
 
 ![Callback Hell](https://www.techyourchance.com/wp-content/uploads/2020/04/callback_hell.jpeg) 
+
 
 Before ES6, developers that had to perform a sequence of operations asynchronously typically used _the callback pattern_ and nested each of the operations as a callback nested inside another callback. Even with the simple example above, this often lead to code that was difficult to read and debug. It was such a common problem that it is now known as a specific **anti-pattern** named **"callback hell"** or **"the pyramid of doom"**. 
 
@@ -298,6 +303,7 @@ Ever wonder what the square root of 4 is?
 FYI - it's 2
 ```
 #### Handling Rejection 
+
 
 ![rejection](https://bwim.info/wp-content/uploads/2017/06/Rejectoin-932x675.jpg) 
 
@@ -556,8 +562,11 @@ When (and only when) you are working with a library of code library implements t
 
 ### Review and Wrap-up 
 
+
 The _Pyramid of doom_ or _callback hell_ is a anti-pattern that describes the scenario in which callbacks are nested inside inside other callbacks in order to execute a sequence of asynchronous operations. 
 
 Before 2015 the _callback_ pattern, combined with _error first callbacks_ to execute asynchronous operations. As of ES6, JavaScript executes `async`/`await` operations by wrapping them in `promise` objects, which enable a developer to dictate when they run, and what happens if they fail (error).  
 
 With Node.js we can use the `promisify()` function to turn legacy code libraries using _error first callbacks_ into Promises and make asynchronous operations easier. 
+
+The `promisify()` function is provided through Node.js and it's `util` module (e.g `const { promisify } = require('util')`) so this will only work in Node.js based applications. 
