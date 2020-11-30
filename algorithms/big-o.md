@@ -1,52 +1,93 @@
-# Big O 
+# What is Big 🅾? 
 
-Big O is something software engineers and developers often find hard to understand. This fear can often results in avoidance of the topic. However, most software engineers tend to build up their perception of Big O's difficulty in their head. Big O or "algorithm complexity" is is the accepted and established method in which programmers express the complexity and efficiency of an operation.
+Big O is fundamental in the world of computer science, yet many developers and engineers often struggle to understand it. 
+
+Most people know its important, and its commonly something software engineers to ruminate upon, exaggerating the complexity and difficulties in understanding and using Big O. 
+This fear can often results in avoidance of the topic. 
+
+Let's stop fearing it, and start getting excited about it. Big O can be a helpful tool to help developers and software engineers to improve the quality and efficiency of code. 
 
 ## Learning Objectives 
 
-* define algorithms 
-* define Big O notation and understand the value of time complexity 
-* define and understand all the pertinent terms surrounding time complexity 
+* provide an introduction into Big O notation 
+* define "algorithms" in the context of Big O 
+* define time complexity/efficiency 
     * asymptotic behavior 
     * worst-case analysis 
+* explain how to calculate time complexity 
+    * step-by-step breakdown 
+    * code examples 
+* define the fundamental types of asymptotic complexity 
+* Differentiate between O, o, θ, Ω and ⍵
 
-> The statements below regarding Big O are in terms of time complexity - not space complexity since this is what most people are referring to when discussing Big O.
+_Here we will focus Big O are in terms of time complexity since this is what most people are referring to when discussing Big O._ 
 
-## Algorithms & Big O  
+# Algorithms → Big 🅾
 
-Algorithms are programmatic operations that performs a computation to calculate a value or values. When discussing algorithms and Big O the goal is to isolate the efficiency of the algorithm (computational operation) from all the other variables that may impact the execution speed of an operation. 
+**Algorithms** are programmatic operations that performs a computation to calculate a value or values. 
 
-Big O is the standard way in which software engineers (and developers) state the complexity and efficiency of an algorithmic operation **and** compare one algorithm's complexity or efficiency. W
+![algorithm](https://media.geeksforgeeks.org/wp-content/cdn-uploads/20191016135223/What-is-Algorithm_-1024x631.jpg)
 
-### Profilers vs. Big O 
+**Big O** is the standard notation computer scientists use to define, discuss, compare and quantify the performance of algorithms using mathematical terms. 
+* define how the algorithm responds to an increasing number of input values (quantify how algorithm scales) 
+* mathematically compare the efficiency of different algorithms 
 
-A category of tools (programs) known as "profilers" exist to measure the execution of sections of code, as well as entire programs and identify bottlenecks. However these tools only serve to identify where a problem _could_ exist. Profilers provide very little information to answer the question of _why_. There is a wide variety of factors that can affect how fast a computer executes an operation including the hardware (CPU speed, RAM amount, RAM speed, Disk speed, Disk space, network speed, etc.). 
 
-The goal to isolate the efficiency and complexity of an algorithm from the hardware and low-level implementation details of the operation. By removing differences in computational power, disk i/o, network speeds, other running processes and all the other variables that may affect the amount of time for an algorithm to execute complete - Big O allows us to quantify the performance difference of two algorithms producing the same result in terms of memory consumptions and execution time. 
 
-### Complexity analysis 
+## Complexity Analysis & Time Complexity 
 
-Complexity analysis is a tool for determining how an algorithm responds to increasing inputs. In other words, how the algorithms performance differs between an input containing 1,000 elements vs. the same algorithm with 1,000,000 inputs. As the input doubles, does the execution time also double? By properly understanding complexity analysis, software engineers can accurately predict the relative performance of an operation, regardless of the hardware, network, or concurrent processes. The goal isn't to determine its exact runtime, but rather how the runtime is affected by a greater number of inputs. 
+**Complexity analysis** is a tool for determining how an algorithm responds to increasing inputs. It can be defined in terms of both _spacial efficiency_ as well as _time complexity_.
+* **time complexity** refers to the efficiency of an algorithm in respect to the amount of time an algorithm requires to execute completely as its input increases.  
+* **spacial complexity** refers to the efficiency of an algorithm in respect to the amount of memory (RAM) it consumes as the input increases.
 
-> Complexity analysis is what Big O notation is all about. Big O is a measure of complexity of computational algorithms. 
+> Note: this article, we will be focusing on _time complexity_
 
-### Calculating Complexity 
+The speed at which a computer can execute (complete) and algorithm is impacted by a wide variety of factors: 
+* Hardware 
+    * CPU Clock Speed 
+    * CPU Cores (dual-core, quad-core, etc.)
+    * Cooling Ability (ability to dispense head from critical components under load)
+    * RAM read/write speed
+    * Hard-drive read/write speed 
+    * Available disc 
+* Network 
+    * Network speed (up/down)
+    * Concurrent Network Operations 
+* Software
+    * Operating System (Mac, Windows, Linux) 
+    * Concurrent applications 
+    * Security & monitoring software 
 
-Calculating algorithmic complexity begins by breaking down the operation into individual steps. Individual steps, is not a a reference to a single statement, or block, but rather a single operation that is executed by a the CPU. Some examples of single steps executed by the CPU include: 
+There are numerous factors that would impact execution speed of computer programs beyond what is listed here. Due to these wide variations, when we calculate an algorithms **time complexity** we simplify the calculation to only include the _specific instructions executed as a direct result of an algorithm_, ignoring all the factors that are outside the scope of the algorithm.
+
+## Calculating Time Complexity 
+
+Calculating an algorithm's time complexity begins by breaking down the operation into individual steps. 
+
+### What's a step? 
+
+In the context of big O and algorithmic complexity, a step is **not**:
+* a function 
+* a line of code 
+* a statement in code 
+* a block of code 
+
+In the context of big O and algorithmic complexity, a step is **a single unit of work executed by the central processing unit (CPU)**.
+
+This includes operations like: 
 * assigning a value to a variable 
 * looking up the value of an element in an array
 * comparing two values 
 * incrementing/decrementing a value 
 * a single arithmetic operation (addition, subtraction, multiplication, division) 
 
-> The list above is not exhaustive, the idea here is to break down algorithm into the single steps taken by the CPU. 
+and many more. The goal is to break down an algorithm into the smallest unit of work that a computer can perform in a single step. 
 
-### Example - Find Maximum Integer 
+### Finding the largest value in a collection  
 
-Take a array of integer values, what would be an algorithm for determining the largest value in the array? 
+One of the best ways to illustrate individual steps executed by the CPU is with an example. 
 
-One potential solution could be to create a variable called `max`, then assign it the value of the first element in the array. Next, we could loop through the array, checking each element to see if it is greater than the `max` variable. In the even that the inspected element is greater than the current value of `max`, the `max` value could be updated to that value. This would continue until reaching the end of the array. Once every element has been inspected, `max` should represent the largest number.
-
+Take the `maximum` function below: 
 ```js
 const arr = [45,23,67,32,11,17,94,16,47,42,23] // input 
 
@@ -60,89 +101,207 @@ function maximum(arr) {
     return max 
 }
 ```
+The function `maxiumum` defined above is an example of an algorithm. It is a strictly defined process for finding the largest value in a collection of numbers. 
 
-> in the above function, we are assuming that the input will _always_ be an array of integers, and that it will have at least 1 integer. 
+The `maximum` function involves the following steps 
+1. create `max` variable (allocate memory)  
+2. look up value of item at index `0` in `arr` (e.g. `arr[0]`)
+3. assign the value returned as to `max` variable (e.g. `max = arr[0]`)
+4. create `i` variable (e.g. `let i`)
+5. assign `i` a value of `1` (e.g. `let i = 1`)
+6. define loop termination condition (e.g. `i < arr.length`)
+7. define loop increment (`i++`)
+8. retrieve the value at position `1` in `arr` (e.g. `arr[1]` → `23`)
+9. compare the value of the element retrieved to `max` (e.g. `arr[i] > max`)
+10. since `arr[1]` is `23` in the example above, the loop concludes and restarts 
+11. increment `i` (e.g. `i++`)
+12. lookup value at `arr[2]` (since `i = 2`) 
+13. compare `arr[2]` with `max`
+14. since `arr[2] = 67` and `max = 45`, `arr[i] > max` evaluates to `true` (e.g `67 > 45`)
+15. enter `if` block 
+16. re-assign `max = arr[i]` (e.g. `max = 67`)
+17. increment `i` (e.g. `i++`)
 
-Breaking down the `maximum` function above might look something like: 
-1. create `max` variable 
-2. look up value of item at index `0` in `arr` (`45` in the example above)
-3. assign the value returned as a result of the lookup to `max` variable (e.g. `max = 45`)
-4. create loop 
-5. create `i` variable (e.g. `let i`)
-6. assign `i` a value of `1` (e.g. `i = 1`)
-7. retrieve the value at position `1` in `arr` (e.g. `arr[1]` → `23`)
-8. compare the value of the element retrieved to `max` (e.g. `arr[i] > max`)
-9. since `arr[1]` is `23` in the example above, the loop concludes and restarts 
+... and continuing the loop block until the loops terminating condition (`i <arr.length`) is reached.  
 
-This process would continue eventually finding `94` as the greatest value, and assigning its value to `max`. The process would inspect every element in the array (`arr`), and return whatever value was in `max` at the end of the loop. 
+Now since we are focused on time-complexity, we need to differentiate between setup steps, and the steps that are impacted by the size of the input. In other words, define which steps would increase as the input to the algorithm increases, from the steps that would execute regardless of the size of the input. 
 
-Now, as we review the steps outlined above, it is important to evaluate the steps that would occur regardless of the number of elements in the array (assuming at least one), and the steps that are executed directly as a result of the inputs size increasing. 
+So given the `maximum` algorithm: 
+* Independent Steps (required regardless of input size) 
+    * create `max` variable 
+    * assign `max` to the first value of the input (`arr[0]`) 
+    * creating loop statement 
+        * the `i` variable 
+        * assigning the `i` variable a value of `1` 
+    * returning the `max` value 
+* Dependent Operations (execute a variable number of times depending on input size)
+    * Number of times we have to increment `i` 
+    * Number of times we have to lookup a value from the input `arr[i]` 
+    * comparing the value of `arr[i]` to `max` 
+    * assigning `max` a value 
 
-Operations regardless of input size: 
-* create `max` variable 
-* assign `max` equal to `arr[0]`
-* creating the loop 
-* creating the `i` variable 
-* assigning the `i` variable a value of `1` 
-* look up value at index `1` in `arr` (`arr[1]`)
-* returning `max` 
+> Remember: we are time complexity is quantifying how an algorithm responds to an increasing input 
 
-Operations dependent on input size
-* retrieving the value of each item in the array (`arr`)
-* comparing the value of `arr[i]` to `max` 
-* assigning `max` a value 
-* incrementing `i` 
+Given the above, we can state objectively that the `maximum` function has
+* 4 independent operations
+* 4 dependent operations 
 
-So based on this information, we know that there are 4 operations that will vary depending on the size of the input, and 7 operations that must execute regardless of the number of elements in the input. As such, we can assign a mathematical equation to state how the algorithms execution time will grow according to the input: 
-* 7 operations regardless 
-* 4 variable operations 
-
-So given an input of `n` the `maximum` function (we'll abbreviate that to `f` here) could be written mathematically as `f(n) = 7 + 4n` 
+Or as a mathematical function where `n` represents the size of the input: `f(n) = 4n + 4`
+* `4` referring to the operations that are **not** affected by `n` 
+* `4n` referring to the operations affected by `n` 
 
 ### Worst-case Scenario
 
-As we inspect these operations and inspect the complexity of the algorithm, it is important to consider the "worst case scenario". In the worst case scenario, we we evaluate the algorithm with an input that would require the greatest number of operations to complete. 
+After distinguishing the individual steps of an algorithm, we need to determine how those execution steps are affected by different types of input. 
 
-In the case of the `maximum` function,  this has to do with the conditional statement inside the `for` loop. 
+We start evaluating input types with what is called the **worst-case scenario**. In terms of time-complexity, the **worst case scenario** refers to an input that would require the most operations to complete. 
+
+In the example of the `maximum` function, the **worst-case scenario** would be the scenario in which the input array was sorted smallest to largest, which would require every iteration through the `for` loop to evaluate the `if (arr[i] > max) ` as `true`, and thus executing an additional steps defined inside the `if` block. 
+
 ```js
-if(arr[i] > max) {
+if ( arr[i] > max ) {
     max = arr[i]
 }
 ```
-While the lookup of the element at `arr[i]` will occur for every element (input), the second lookup and assignment would only occur if the condition evaluates to `true` (e.g the integer at `arr[i]` is greater than the value associated with the `max` variable). Within the `if` body, are 2 more operations. First, another lookup of the value of the element at `arr[i]` and another to assign that value to `max`. 
 
-In the _worst case scenario_ approach, we take the scenario that would involve the most steps/operations. In this case, that scenario would involve the most operations would be when the `arr`'s elements were sorted from smallest to largest. If the array was sorted in this manner, the operations within the `if` body would occur for each element in the `arr`. We can adjust the mathematical representation of this so that `f(n) = 7 + 4n + 2n` or `f(n) = 7 + 6n`.  
+So using the 4 independent steps, 4 dependent steps, and 2 conditional steps, we can alter the previous formula to add the conditionally dependent steps outlined as part of the worst-case scenario: `f(n) = 4n + 4 + 2n` or simplified as `f(n) = 6n + 4`
 
 ### Asymptotic behavior 
 
-Algorithms that execute faster with a larger input, will often execute faster will smaller inputs as well. In complexity analysis, we only are concerned with how the function (`f`) behaves as the input (`n`) grows - so we tend to ignore the parts of the algorithm that do grow slowly with increased inputs, instead we focus on the parts that grow proportionally to the input. In the case of the mathematical function defined earlier (`f(n) = 7 + 6n`), `7` is constant regardless of the input size, however the `6n` grows directly as the size of the input grows larger. 
+In complexity analysis, we are primarily concerned with how the function (`f(n)`) behaves as the input (`n`) grows. 
 
-We refer to the `7` as an "initialization constant" since the steps involved are setup operations that will occur independent of the operation size. There are other initialization constants when it comes to programming, like initialization of a virtual machine in the case of Java. Since we are not concerned with the things that occur regardless of the input, we typically drop initialization constants from our mathematical function representing the algorithms complexity.  
+So the next step in calculating the time-complexity is to eliminate (ignore) all the independent variables (the steps that occur regardless of the input size) from the equation. 
 
-After removing the initialization constants, we  are left with a mathematical formula of `f(n) = 6n` to represent the complexity of the `maximum` function in relation to the input size. 
+In the case of the mathematical function defined earlier (`f(n) = 6n + 4`), `4` is constant regardless of the input size, however the `6n` grows directly as the size of the input grows larger. We refer to these independent operations as `4` "initialization constants". 
 
-Since the steps associated with the multiplier (`6n`) are related to the implementation outlined in JavaScript, this could vary depending on the implementation language or how a complier processes the high-level code into machine code. For example, array lookups in JavaScript, Pascal, and C are all executed differently. In C, `arr[i]` does not check to see if `i` is within the declared array size, while in Pascal it does. 
+####  Initialization Constants 
 
-The statement in Pascal 
-```pp
-max = arr[i] 
+**Initialization constants** are the steps of an algorithm that will execute regardless of the size of the input. Including "behind the scene" initialization operations like the virtual machine required for Java.  
+
+When we remove our initialization constants, our mathematical function for `maximum` is stated simply as `f(n) = 6n` 
+
+> We remove initialization constants because these steps are not affected by the input size, or the input values. Instead they are a direct result of the syntax and rules of a high-level programming language. Initialization constant can vary quite dramatically from one language to another, and do not help to clarify how an algorithm responds to increasing input sizes (time complexity). 
+
+Asymptotic behavior refers to an algorithms time complexity with intialization constants removed.  
+
+### Common Types of Asymptotic Behavior 
+
+Given this behavior we can conclude: 
+* A algorithm that does not require any looping will have a complexity of `f(n) = 1` since the number of instructions is constant regardless of the size of the input
+* A algorithm with a single loop, which loops from `1` to `n` will have a complexity of `f(n) = n` since it will perform the instructions inside the loop a constant number of times. 
+* An algorithm with a nested loop (a loop inside another loop) will have a complexity of `f(n) = n²` since the execution time will increases by a factor of `n` as the size of the input (`n`) increases in size. 
+
+Now to take everything that we've discussed an put it in the computer science language of Big O is pretty simple. Essentially we've already done it.
+* `f(1)` 
+    * represents algorithms with a constant number of instructions 
+    * alternatively, you could say _the size of the input does **not** affect the execution time of the algorithm_ 
+    * mathematically, we would represent this as  `f(n) = 1` 
+    * is referred to as a "constant time" 
+    * execution time is constant regardless of the size of the input 
+* `f(n)`
+    * represents an algorithm that's execution time grows in direct proportion to the size of the input 
+    * alternatively, _the size of the input directly affects the algorithms execution time_
+    * mathematically, we would represent this as `f(n) = n`
+    * is referred to as a "linear time" 
+    * execution time grows in direct proportion to the input (`n`)
+* `f(n²)`
+    * represents an algorithm that executes proportionally at a rate of n squared compared to the input siz 
+    * mathematically, we would represent this as `f(n) = n²` 
+    * is referred to as quadratic time 
+    * execution time grows in a quadratic fashion as the input increases. 
+
+... and this would continue as the exponents representing the function grows.
+
+> Remember the key idea here - we are trying to indicate how an algorithm scales as the input to the algorithm increases. Algorithms with a larger θ will execute more slowly than algorithms with a smaller θ
+
+### Asymptotic Complexity & Bounds 
+
+It is important to understand that `O(n)` (pronounced "Oh of n") and `θ(n)` (pronounced "theta of n") do not have the same meaning. 
+* Algorithms expressed in terms of `θ` ("theta") are expressed in terms of "tight bounds". 
+* With tightly bound complexity, an algorithm will consistently execute at the rate expressed by the function of theta. 
+* Algorithms with complexities expressed in `O` are defining the _upper bounds_ or _worse case scenario_ for execution steps. 
+
+The difference here is between `O` and `θ` really comes down to how much variability there is in the equation. 
+
+Take `Array.find(x => condition)` function: 
+
+```js
+const input = [5, 12, 8, 130, 44];
+const found = input.find(element => element > 10);
+
+console.log(found); // 12
 ```
-Would be equivalent to this statement in C
-```c
-if ( i >= 0 && i < n ) {
-    max = arr[i];
+The `.find` method iterates through every element in the array, and return the first element that matches the provided logical comparison. 
+
+Under the hood, the `.find` function is performing the following:
+
+```js
+function find(collection, condition){
+    for(let i = 0; i < collection.length; i++){
+        const item = collection[i]
+        if(condition(item)) {
+            return item 
+        } 
+    }
+    return null; 
 }
-``` 
+```
+In summary `.find`: 
+1. loops through a collection
+2. With each iteration passing each element as a parameter to the function provided (`condition`) 
+3. Depending on the return value of `condition(item)` 
+    * `true` indicates a match has been found and the value is returned
+    * `false` indicates a non-match, and the loop continues 
+4. If no match has been found by the end of the loop through the collection, then a `null` value is returned 
 
-Given this information, it is reasonable to assume that different programming languages would have different implications in terms of the number of actual steps executed for a given algorithm, so after removing our initialization constants, we remove our multiplier from our mathematical formula, resulting in a much simpler mathematical function: `f(n) = n`. This process of dropping all factors (multipliers) and removing initialization constants, and defining the algorithms behavior in terms of the largest growing term is referred to as "asymptotic behavior". 
+Assuming `Array.find` works like the function defined above: 
+* If the first element in the collection matches the provided condition to the `Array.find` algorithm could complete with only a single iteration. This possibility indicates an algorithm that's **worst-case scenario** involves looping through the entire collection. 
+    * This would be a linear-time-complexity or `f(n) = n` 
+    * Since this is the _upper bound_, we could also express it as `o(n)`
 
-Mathematically, asymptotic behavior has to do with limiting the function definition to `f(n)` as it trends toward infinity. This results in a few potential shapes for our mathematical function. 
+There are 3 primary types of bounds in asymptotic functions: 
+* `O(n)` denotes the mathematical function in the worst case scenario 
+    * pronounced "big O of n" 
+    * referred to as _upper bound_
+    * Worst-case scenario 
+        * Most execution steps 
+        * Longest execution time 
+    * Greatest time-complexity
+    * Least efficient  
+* `θ(n)`  denotes the mathematical function of the exact time-complexity of a an asymptotic function given any input. 
+    * pronounced "theta of n" 
+    * referred to as _tightly-bound_
+    * Exact 
+    * exact execution steps 
+    * consistent response to increasing input size 
+    * consistent efficiency regardless of input values 
+    * consistent complexity regardless of input values
+* `Ω(n)` denotes the mathematical function provided the best case scenario (fastest execution)
+    * pronounced "omega of n" 
+    * referred to as _lower bound_
+    * Best-case 
+    * Least execution steps 
+    * Best-case scenario 
+        * Lest execution steps 
+        * Fastest execution time 
+    * Least time-complexity 
+    * Most efficient 
 
-* `f(n) = 3n + 36`, would be described as `f(n) = n` → because the execution will grow directly in relation to the input size. 
-* `f(n) = 256`, would be described as `f(n) = 1` → because the execution will be constant regardless of the input size 
-* `f(n) = n² + 5n + 3` would be described asymptotically as `f(n) = n²` because `n²` will grow faster than `3n` as the input increases 
-* `f(n) = n³ + 231n + 69` would be described as `f(n) = n³` → because `n³` is the fastest growing term. 
+This can be broken down further between `O` vs. `o` and `Ω` vs `ꞷ` or "big O vs little O" and "big omega vs little omega": 
 
+| Notation | Pronunciation  | Bound | Numeric Operator | Meaning | 
+|:---------|:---------------|:------|:-----------------|:--------| 
+| `O`      | "big O"        | tight-upper | `<`        | maximum possible number of execution steps (tightly bound) |
+| `o`      | "little O"     | upper | `≤`              | highest possible number of execution steps  | 
+| `θ`      | "theta"        | tight | `=`              | exact number of execution steps (tightly bound) | 
+| `Ω`      | "big omega"    | lower | `≥`              | least number of execution steps | 
+| `ꞷ`      | "little omega" | tight-lower | `>`        | least number of execution steps (tightly bound) |  
+
+Tight refers to how accurate the mathematical function representing the asymptotic complexity is for a given algorithm. 
+
+## Learn by example 
+
+The best way to learn is to do it, so join me in taking apart a sorting algorithm and examining its asymptotic time-complexity. 
 
 ### Sorting Algorithms 
 
@@ -161,7 +320,7 @@ There are numerous realistic and practical application for sorting algorithms, a
 A "selection sort" algorithm takes an input, and sorts it according to some arbitrary value. Take a number selection sorting algorithm like the one below: 
 
 ```js
-const selectionSort = (arr) => {
+function selectionSort(arr){
     const inputArr = [...arr]
     const output = []
 
@@ -183,74 +342,73 @@ const selectionSort = (arr) => {
 }
 ```
 
+The basic sorting function (`selectionSort`) defined above sorts values from smallest to largest by: 
+1.  copying the input (to avoid modifying by reference) 
+2.  iterating through the copied array (`inputArr`) and removing the smallest element (`min`) from the input array amd adding it to the `output` array. 
+3. repeating step 2 until the `inputArr` has no elements left
 
-The basic selection sort algorithm above is sorting values from smallest to largest, by copying the input (to avoid modifying by reference) and going iterating through the copied array (`inputArr`), removing the smallest element from the input array and adding it to the output array until every element has been removed. 
+> **Challenge** Go ahead and see if you can calculate the complexity (in big O notation and θ notation) yourself. 
 
-In terms of complexity, the algorithm above will execute the outer loop `n` times, and the inner loop will execute `n` time during the first iteration since it `inputArr` will start with `n` items, however each subsequent time will execute `n - i` with `i` representing the number of elements removed. 
+##### Calculating Selection Sort Time Complexity 
 
-**Challenge 🧐 Go ahead and see if you can calculate the complexity (in big O notation and θ notation) yourself**. 
+Recall, we mathematically determine complexity by: 
+1. determining the individual steps executed by the CPU 
+    1. create `inputArr`
+    2. copy `arr` into `inputArr` 
+    3. create `output`
+    4. initialize `output = []` 
+    5. create loop
+        1. create `i` 
+        2. assign `i = 1`
+        3. lookup `inputArr[i]` 
+        4. compare `inputArr[i] < min`
+        5. optionally, assign `min = inputArr[i]`
+        6. optionally, assign `minIndex = i` 
+        7. increment `i` 
+        8. check condition (`i < inputArr.length`)
+        9. repeat loop while `i < inputArr.length` 
+    8. remove `min` element from `inputArr` 
+    9. add it to minimum value to `output` array 
+    10. check `inputArr.length > 0`
+    11. optionally, loop 
+3. determine which steps are dependent steps
+    * dependent 
+        * lookup `inputArr[i]` 
+        * inside loop:
+            * compare `inputArr[i] < min`
+            * optionally, assign `min = inputArr[i]`
+            * optionally, assign `minIndex = i` 
+            * increment `i` 
+            * repeat loop while `i < inputArr.length` 
+        * remove `min` element from `inputArr` 
+        * add it to minimum value to `output` array 
+        * check `inputArr.length > 0`
+        * optionally, loop 
+    * independent 
+        * create `inputArr`
+        * copy `arr` into `inputArr` 
+        * create `output`
+        * initialize `output = []`
+        * create loop
+            * create `i` 
+            * assign `i = 1`
+4. determine the worst-case scenario 
+    * the execution of both loops (`for` and `while`) are both directly impacted by the size of the input, and unaffected (in terms of execution time) by the values of the input. 
+5. remove initialization constants 
 
-> We'll go over the answer next, so if you're challenging yourself to solve it, stop here and work it out for yourself before continuing.   
+#### Walking through the Selection Sort
 
-#### Reviewing Selection Sort 
-
-Let's go over this with some concrete numbers for illustration: 
-
-Imagine we have an input where `arr = [11, 25, 12, 22, 64]`. 
-
-We will summarize it using the following chart: 
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---| 
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`| 5 | 0
-
+The `while` loop that states we continue looping until every element from `inputArr` has been removed. Then with each iteration through the `while` loop, a nested `for` loop through the same collection of elements is executed to find the smallest value. 
 
 1. the first pass `inputArr`, will determine `11` is the smallest element in the `inputArr` and remove it, placing it in `output`
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---| 
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`| 5 | 0
-    
 2. The second pass through `inputArr` will determine `12` is the smallest value, and remove it from `inputArr`, placing the value in `output` 
-    | loop | `output` | `inputArr` | `min` |
-    |:---|:---|:---|:---|:---|:---| 
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`|  
-    | 1 | `[11]` | `[25, 12, 22, 64]` | `12`| 
 3. The third pass through `inputArr` , will determine `22` is the smallest value, remove it from `inputArr`, placing the value in `output`
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---| 
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`| 
-    | 1 | `[11]` | `[25, 12, 22, 64]` | `12`| 
-    | 2 | `[11, 12]` | `[25, 22, 64]` | `22`|
 4. The fourth pass through `inputArr` , will determine `25` is the smallest value, remove it from `inputArr`, placing the value in `output`
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---|
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`| 
-    | 1 | `[11]` | `[25, 12, 22, 64]` | `12`| 
-    | 2 | `[11, 12]` | `[25, 22, 64]` | `22`| 
-    | 3 | `[11, 12, 22]` | `[25, 64]` | `25`|
 5. The fifth pass through `inputArr` , will determine `64` is the smallest value, remove it from `inputArr`, placing the value in `output`
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---|
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`|
-    | 1 | `[11]` | `[25, 12, 22, 64]` | `12`|
-    | 2 | `[11, 12]` | `[25, 22, 64]` | `22`|
-    | 3 | `[11, 12, 22]` | `[25, 64]` | `25`| 
-    | 4 | `[11, 12, 22, 25]` | `[64]` | `64`| 
 6. The sixth pass through `inputArr` , will determine that there are no more elements within `inputArr`, and exit the loop. 
-    | loop | `output` | `inputArr` | `min` | input count | output count | 
-    |:---|:---|:---|:---|:---|:---|
-    | 0 | `[]` | `[11, 25, 12, 22, 64]` | `11`|
-    | 1 | `[11]` | `[25, 12, 22, 64]` | `12`| 
-    | 2 | `[11, 12]` | `[25, 22, 64]` | `22`|
-    | 3 | `[11, 12, 22]` | `[25, 64]` | `25`| 
-    | 4 | `[11, 12, 22, 25]` | `[64]` | `64`| 
-    | 5 | `[11, 12, 22, 25, 64]` | `[]` | |
 7. The `output` will be returned with the elements sorted from smallest to largest `[11, 12, 22, 25, 64]`
 
-#### What's happening here
-
-We have a `while` loop that states we continue looping until every element from `inputArr` has been removed. As we loop over those elements, we remove the smallest element (`11`) and place it in the `output` array. Then we start over with `n - 1` items now in `inputArr`. On the second pass, we determine `12` is the smallest element in `inputArr` (since `11` has been removed), and once again shift the element from `inputArr` to `output`. The process will continue shifting the smallest element from `inputArr` to `output` with each iteration. 
-
-> The number of elements in the inner loop decreases with each loop 
+Overall we can summarize the behavior of an input `[11, 25, 12, 22, 65]` with the following table: 
 
 | loop | `output` | `inputArr` | `min` | `inputArr.length` | `output.length` | 
 |:---|:---|:---|:---|:---|:---|
@@ -261,98 +419,18 @@ We have a `while` loop that states we continue looping until every element from 
 | 4 | `[11, 12, 22, 25]` | `[64]` | `64`| 1 | 4 | 
 | 5 | `[11, 12, 22, 25, 64]` | `[]` | | 0 | 5 | 
 
-In Summary: 
-* There are two (2) loops 
+* Overall the `selectionSort` function
+    * Is comprised of two (2) loops 
     * The outer-most loop executes `n` times 
     * the inner loop executes `n` times 
 
-Given the above information, in the _worse case scenario_ both loops are executed `5` times for an input with `5` elements. In terms of a mathematical function, we could represent this as `f(n) = n * n` or `f(n) = n²`.  Since the there is no scenario in which this algorithm will execute faster than `f(n) = n²` we can also say that this equation is `θ(n²)` ("theta of n squared"). 
+In the _worse case scenario_ both loops are executed `5` times for an input with `5` elements. In terms of a mathematical function, we could represent this as `f(n) = n * n` or `f(n) = n²`.  
 
-> Cheers 🥂 to you if you got that 👍
+Since the there is no scenario in which this algorithm will execute faster than `f(n) = n²` 
 
-The sorting algorithm outlined above is a **highly inefficient** method of sorting. 
+Cheers 🥂 to you if you got that 👍
 
-> 🧠 If you are up for a challenge, see if you can think of a more efficient algorithm for sorting numbers 🧠 
-
-
-### Asymptotic behavior and Big O 
-
-Asymptotic behavior essentially drops all the decorative constants from the mathematical function representing the execution steps of the algorithm. 
-
-Given this behavior we can conclude: 
-* A algorithm that does not require any looping will have a complexity of `f(n) = 1` since the number of instructions is constant regardless of the size of the input
-* A algorithm with a single loop, which loops from `1` to `n` will have a complexity of `f(n) = n` since it will perform the instructions inside the loop a constant number of times. 
-* An algorithm with a nested loop (a loop inside another loop) will have a complexity of `f(n) = n²` since the execution time will increases by a factor of `n` as the size of the input (`n`) increases in size. 
-
-Now to take everything that we've discussed an put it in the computer science language of Big O is pretty simple. Essentially we've already done it.
-* `θ(1)` 
-    * pronounced "O of 1" or "theta of 1" 
-    * represents algorithms with a constant number of instructions 
-    * alternatively, you could say _the size of the input does **not** affect the execution time of the algorithm_ 
-    * mathematically, we would represent this as  `f(n) = 1` 
-* `θ(n)`
-    * pronounced "O of n" or "theta of n" 
-    * represents an algorithm that's execution time grows in direct proportion to the size of the input 
-    * alternatively, _the size of the input directly affects the algorithms execution time_
-    * mathematically, we would represent this as `f(n) = n`
-* `θ(n²)`
-    * pronounced "O of n squared" or "theta of n squared" 
-    * represents an algorithm that executes proportionally at a rate of n squared compared to the input siz 
-    * mathematically, we would represent this as `f(n) = n²` 
-
-... and this would continue as the exponents representing the function grows.
-
-Once we have an algorithm in terms of theta or big O - we have the algorithms _time complexity_ or _complexity_. The `θ(1)`, `θ(n)`, and `θ(n²)` all occur so commonly that we have names for algorithms that execute at this level of complexity.
-* `θ(1)` is referred to as a "constant time" algorithm since the execution time is constant regardless of the size of the input 
-* `θ(n)` is referred to as a "linear time" algorithm since execution time grows in direct proportion to the input (`n`)
-* `θ(n²)` is referred to as quadratic time since the execution time grows in a quadratic fashion as the input increases. 
-
-> Remember the key idea here - we are trying to indicate how an algorithm scales as the input to the algorithm increases. Algorithms with a larger θ will execute more slowly than algorithms with a smaller θ
-
-### Asymptotic Complexity & Bounds 
-
-It is important to note that there is a difference between `O(n)` (pronounced "Oh of n") and `θ(n)` (pronounced "theta of n"). 
-* Algorithms expressed in terms of `θ` ("theta") are expressed in terms of "tight bounds". With tightly bound complexity, an algorithm will consistently execute at the rate expressed by the function of theta. 
-* Algorithms with complexities expressed in `O` are defining the _upper bounds_ or _worse case scenario_ for execution steps. 
-
-The difference here is between `O` and `θ` really comes down to how much variability there is in the equation. One example to illustrate the difference could be a the `Array.find` function, which goes through an array, and return the first element that matches the provided logical comparison. 
-
-```js
-const array1 = [5, 12, 8, 130, 44];
-const found = array1.find(element => element > 10);
-
-console.log(found); 
-// expected output: 12
-```
-
-With the find algorithm, as soon as an element matches the condition a value is returned. So in the worst case scenario, we would need to loop through the entire collection of elements to find an element that matches the provided condition. This means suggests a linear complexity, or `O(n)`. However, since there are scenarios where the equation would require fewer steps to execute, stating that the equation is `θ(n)` would be inaccurate. 
-
-So `θ` tells us that an algorithm will execute tightly bounded (consistently), while `O` indicates that the "upper bounds" of the algorithm (the worst case scenario) is represented by the function `O`. 
-
-We can also denote the "lower bound" or the best-case scenario using `Ω` (pronounced "omega"). In `Ω` we are expressing input to an algorithm that requires the least number of execution steps. 
-
-In Summary: 
-* `O` indicates the upper bounds of an algorithms asymptotic complexity 
-    * worst-case scenario
-    * number of execution steps given an input requiring the maximum potential execution steps 
-* `θ` indicates a tightly bound (consistent) algorithm asymptotic complexity 
-    * actual execution time 
-    * same number of steps executed for any input  
-* `Ω` indicates the lower bounds of an algorithms asymptotic complexity 
-    * best-case scenario 
-    * number of execution steps given an input requiring the least potential execution steps 
-
-This can be broken down further between `O` vs. `o` and `Ω` vs `ꞷ` or "big O vs little O" and "big omega vs little omega": 
-
-| Notation | Pronunciation  | Bound | Numeric Operator | Meaning | 
-|:---------|:---------------|:------|:-----------------|:--------| 
-| `O`      | "big O"        | tight-upper | `<`        | maximum possible number of execution steps (tightly bound) |
-| `o`      | "little O"     | upper | `≤`              | highest possible number of execution steps  | 
-| `θ`      | "theta"        | tight | `=`              | exact number of execution steps (tightly bound) | 
-| `Ω`      | "big omega"    | lower | `≥`              | least number of execution steps | 
-| `ꞷ`      | "little omega" | tight-lower | `>`        | least number of execution steps (tightly bound) |  
-
-Tight refers to how accurate the mathematical function representing the asymptotic complexity is for a given algorithm. 
+> The sorting algorithm outlined above is a **highly inefficient** method of sorting 🧠 If you are up for a challenge, see if you can think of a more efficient algorithm for sorting numbers 🧠 
 
 ## Recursion 
 
@@ -474,25 +552,26 @@ This introduces the last type of asymptotic complexity, logarithmic complexity. 
 
 We can summarize these various algorithms with a chart to demonstrate how the algorithm responds to increasing inputs: 
 
-![Big O chart](https://www.google.com/url?sa=i&url=https%3A%2F%2Fdanielmiessler.com%2Fstudy%2Fbig-o-notation%2F&psig=AOvVaw0LGbhsjuZ4Nc_i4j8-rsUa&ust=1606772321008000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCk98XbqO0CFQAAAAAdAAAAABAV)
+![Big O chart](https://danielmiessler.com/images/big-o-chart-tutorial-bazar-aymptotic-notations-1.png.webp)
 
 
 ## All Together  
 
 In short, here are the general rules regarding Big O and calculating algorithmic complexity 
 
-1. Many simple algorithms can be analyzed by counting the loops
+1. Algorithms that execute faster with a larger input, will often execute faster will smaller inputs as well. 
+2. Many simple algorithms can be analyzed by counting the loops
     * An algorithm with a single loop, will generally have a _linear_ complexity. 
     * Every nested loop will increase the complexity beyond `f(n) = n` by a factor of n
         * a single loop will have a complexity of `f(n) = n` 
         * a nested loop with will have a complexity of `f(n) = n²` 
         * a nested loop nested inside another nested loop (3 loops) will have a complexity of `f(n) = n³` 
-2. Given an algorithm with a series of loops (not nested loops), the slowest loop (e.g. the loop with the most computational steps) will determine the asymptotic behavior of the algorithm.
+3. Given an algorithm with a series of loops (not nested loops), the slowest loop (e.g. the loop with the most computational steps) will determine the asymptotic behavior of the algorithm.
     * Two nested loops followed by a single loop is asymptotically the same as the nested loops since the nested loops will have a greater impact on execution time as the input grows. 
-3. While all the symbols `O`, `o`, `Ω`, `ω` and `Θ` are useful at times, O is the one used more commonly, as it's easier to determine than Θ and more practically useful than `Ω`.
+4. While all the symbols `O`, `o`, `Ω`, `ω` and `Θ` are useful at times, O is the one used more commonly, as it's easier to determine than Θ and more practically useful than `Ω`.
     * It is easier to determine `O` complexity than `θ` complexity or `Ω` complexity 
     * `O` complexity provides the best insight into performance, since it assumes the worst-case scenario 
-4. Logarithmic complexity generally occurs in recursive function, and represents an algorithm that gets more efficient as the input increases. 
+5. Logarithmic complexity generally occurs in recursive function, and represents an algorithm that gets more efficient as the input increases. 
 
 ## References 
 
@@ -502,3 +581,18 @@ In short, here are the general rules regarding Big O and calculating algorithmic
     * [Know Thy Complexities!](https://www.bigocheatsheet.com/)
 
 
+
+
+# Extra
+
+### Profilers vs. Big O 
+
+**Profilers** are a category of tools that precisely measure the execution time of a algorithm, function or program in order to identify bottlenecks. This information is useful and can help identify where developers should spend time optimizing algorithms to execute more efficiently, however 
+
+However these tools only serve to identify where a problem _could_ exist. Profilers provide very little information to answer the question of _why_. There is a wide variety of factors that can affect how fast a computer executes an operation including the hardware (CPU speed, RAM amount, RAM speed, Disk speed, Disk space, network speed, etc.). 
+
+The goal to isolate the efficiency and complexity of an algorithm from the hardware and low-level implementation details of the operation. By removing differences in computational power, disk i/o, network speeds, other running processes and all the other variables that may affect the amount of time for an algorithm to execute complete - Big O allows us to quantify the performance difference of two algorithms producing the same result in terms of memory consumptions and execution time. 
+
+
+---
+Given this information, it is reasonable to assume that different programming languages would have different implications in terms of the number of actual steps executed for a given algorithm, so after removing our initialization constants, we remove our multiplier from our mathematical formula, resulting in a much simpler mathematical function: `f(n) = n`. This process of dropping all factors (multipliers) and removing initialization constants, and defining the algorithms behavior in terms of the largest growing term is referred to as "asymptotic behavior". 
