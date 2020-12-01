@@ -9,18 +9,22 @@ Let's stop fearing it, and start getting excited about it. Big O can be a helpfu
 
 ## Learning Objectives 
 
-* provide an introduction into Big O notation 
-* define "algorithms" in the context of Big O 
-* define time complexity/efficiency 
+
+1. provide an introduction into Big O notation 
+2.  define "algorithms" in the context of Big O 
+3. define time complexity/efficiency 
     * asymptotic behavior 
     * worst-case analysis 
-* explain how to calculate time complexity 
+4. explain how to calculate time complexity 
     * step-by-step breakdown 
     * code examples 
-* define the fundamental types of asymptotic complexity 
-* Differentiate between O, o, θ, Ω and ⍵
+5.  define the fundamental types of asymptotic complexity 
+6. Differentiate between O, o, θ, Ω and ⍵
 
-_Here we will focus Big O are in terms of time complexity since this is what most people are referring to when discussing Big O._ 
+
+![learn](https://reachinghighernh.org/wp-content/uploads/2018/07/competency-portfolio-learning.png)
+
+> _Here we will focus Big O are in terms of time complexity since this is what most people are referring to when discussing Big O._ 
 
 # Algorithms → Big 🅾
 
@@ -33,14 +37,17 @@ _Here we will focus Big O are in terms of time complexity since this is what mos
 * mathematically compare the efficiency of different algorithms 
 
 
-
 ## Complexity Analysis & Time Complexity 
 
 **Complexity analysis** is a tool for determining how an algorithm responds to increasing inputs. It can be defined in terms of both _spacial efficiency_ as well as _time complexity_.
 * **time complexity** refers to the efficiency of an algorithm in respect to the amount of time an algorithm requires to execute completely as its input increases.  
 * **spacial complexity** refers to the efficiency of an algorithm in respect to the amount of memory (RAM) it consumes as the input increases.
 
+![effeciency](https://s3.amazonaws.com/mentoring.redesign/s3fs-public/efficiency.jpg)
+
 > Note: this article, we will be focusing on _time complexity_
+
+### Lots of Factors
 
 The speed at which a computer can execute (complete) and algorithm is impacted by a wide variety of factors: 
 * Hardware 
@@ -58,21 +65,24 @@ The speed at which a computer can execute (complete) and algorithm is impacted b
     * Concurrent applications 
     * Security & monitoring software 
 
-There are numerous factors that would impact execution speed of computer programs beyond what is listed here. Due to these wide variations, when we calculate an algorithms **time complexity** we simplify the calculation to only include the _specific instructions executed as a direct result of an algorithm_, ignoring all the factors that are outside the scope of the algorithm.
+The key idea here is that finite execution speed is highly variable. When we calculate an algorithms **time complexity** we simplify the calculation to only include the _specific instructions executed as a direct result of an algorithm_, ignoring all the factors that may impact execution speed when they are outside the scope of the algorithm.
 
-## Calculating Time Complexity 
+## Calculating Time-Complexity
 
 Calculating an algorithm's time complexity begins by breaking down the operation into individual steps. 
 
+![calculating](https://hrwatchdog.calchamber.com/wp-content/uploads/ArithmeticFact-1-e1563553095922.jpg)
+
 ### What's a step? 
 
-In the context of big O and algorithmic complexity, a step is **not**:
-* a function 
-* a line of code 
-* a statement in code 
-* a block of code 
-
-In the context of big O and algorithmic complexity, a step is **a single unit of work executed by the central processing unit (CPU)**.
+In the context of big O and algorithmic complexity... 
+* a step is **NOT** → 🚫  
+    * a function 
+    * a line of code 
+    * a statement in code 
+    * a block of code 
+* a step is → ✅
+    * **a single unit of work executed by the central processing unit (CPU)**.
 
 This includes operations like: 
 * assigning a value to a variable 
@@ -81,11 +91,13 @@ This includes operations like:
 * incrementing/decrementing a value 
 * a single arithmetic operation (addition, subtraction, multiplication, division) 
 
-and many more. The goal is to break down an algorithm into the smallest unit of work that a computer can perform in a single step. 
+and many more. 
 
-### Finding the largest value in a collection  
+The goal is to break down an algorithm into the smallest unit of work that a computer can perform in a single step. 
 
-One of the best ways to illustrate individual steps executed by the CPU is with an example. 
+### Learn by Example 
+
+One of the best ways to illustrate calculating time-complexity is to work through a real example. 
 
 Take the `maximum` function below: 
 ```js
@@ -101,7 +113,7 @@ function maximum(arr) {
     return max 
 }
 ```
-The function `maxiumum` defined above is an example of an algorithm. It is a strictly defined process for finding the largest value in a collection of numbers. 
+The function `maximum` defined above is an example of an algorithm. It is a strictly defined process for finding the largest value in a collection of numbers. 
 
 The `maximum` function involves the following steps 
 1. create `max` variable (allocate memory)  
@@ -156,6 +168,8 @@ After distinguishing the individual steps of an algorithm, we need to determine 
 
 We start evaluating input types with what is called the **worst-case scenario**. In terms of time-complexity, the **worst case scenario** refers to an input that would require the most operations to complete. 
 
+![worst case](https://nlgroup.com/wp-content/uploads/2018/01/Worst-Case-Scenario.jpg)
+
 In the example of the `maximum` function, the **worst-case scenario** would be the scenario in which the input array was sorted smallest to largest, which would require every iteration through the `for` loop to evaluate the `if (arr[i] > max) ` as `true`, and thus executing an additional steps defined inside the `if` block. 
 
 ```js
@@ -166,11 +180,13 @@ if ( arr[i] > max ) {
 
 So using the 4 independent steps, 4 dependent steps, and 2 conditional steps, we can alter the previous formula to add the conditionally dependent steps outlined as part of the worst-case scenario: `f(n) = 4n + 4 + 2n` or simplified as `f(n) = 6n + 4`
 
-### Asymptotic behavior 
+## Asymptotic behavior 
 
 In complexity analysis, we are primarily concerned with how the function (`f(n)`) behaves as the input (`n`) grows. 
 
 So the next step in calculating the time-complexity is to eliminate (ignore) all the independent variables (the steps that occur regardless of the input size) from the equation. 
+
+![graph](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsvaXJAgLesoxCXaATzOZ3ESJ15hMrlljtKA&usqp=CAU)
 
 In the case of the mathematical function defined earlier (`f(n) = 6n + 4`), `4` is constant regardless of the input size, however the `6n` grows directly as the size of the input grows larger. We refer to these independent operations as `4` "initialization constants". 
 
@@ -575,10 +591,8 @@ In short, here are the general rules regarding Big O and calculating algorithmic
 
 ## References 
 
-* Dionysis Zindros 
-    * [A Gentle Introduction to Algorithm Complexity Analysis](http://discrete.gr/complexity/)
-* Big O Cheat Sheet: 
-    * [Know Thy Complexities!](https://www.bigocheatsheet.com/)
+* Dionysis Zindros -  [A Gentle Introduction to Algorithm Complexity Analysis](http://discrete.gr/complexity/)
+* Big O Cheat Sheet - [Know Thy Complexities!](https://www.bigocheatsheet.com/)
 
 
 
