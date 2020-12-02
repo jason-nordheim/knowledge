@@ -1,0 +1,18 @@
+body {
+    height: 100%;
+    width: 100%;
+    color: transparent;
+}
+.grid { 
+    display: flex;
+    height: 90vmin; 
+    width: 90vmin;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(50, 1fr);
+    gap: 0px;
+    grid-template-columns: repeat(50, 1fr);
+}
+.node {
+    border:  1px solid gray;
+}
