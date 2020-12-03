@@ -1,29 +1,61 @@
 export class Node {
     constructor(grid, x, y) {
+        this._position = null;
+        this._grid = null;
         this._color = null;
+        this.html = null;
         this.neighbors = new Array();
-        this.isClosed = this._color ? this._color === getNodeColor(NodeType.closed) ? 1 : -1 : 0;
-        this.isOpen = this._color ? this._color === getNodeColor(NodeType.open) ? 1 : -1 : 0;
-        this.isBarrier = this._color ? this._color === getNodeColor(NodeType.barrier) ? 1 : -1 : 0;
-        this.isPath = this._color ? this._color === getNodeColor(NodeType.path) ? 1 : -1 : 0;
-        this.isStart = this._color ? this._color === getNodeColor(NodeType.start) ? 1 : -1 : 0;
-        this.isEnd = this._color ? this._color === getNodeColor(NodeType.end) ? 1 : -1 : 0;
+        this.isDefault = () => this._color === String(getNodeColor(NodeType.default));
+        this.isClosed = () => this._color === String(getNodeColor(NodeType.closed));
+        this.isOpen = () => this._color === String(getNodeColor(NodeType.open));
+        this.isBarrier = () => this._color === String(getNodeColor(NodeType.barrier));
+        this.isPath = () => this._color === String(getNodeColor(NodeType.path));
+        this.isStart = () => this._color === String(getNodeColor(NodeType.start));
+        this.isEnd = () => this._color === String(getNodeColor(NodeType.end));
+        this.getPosition = () => this._position;
         this._grid = grid;
-        this._root = document.createElement('div');
-        this._root.classList.add('node');
-        this._grid.root.appendChild(this._root);
-        this._pos = new NodePosition(x, y);
-        this.changeType(NodeType.start);
+        this.html = document.createElement("div");
+        this.html.classList.add("node");
+        this.html.addEventListener("drag", (e) => e.preventDefault());
+        this.html.addEventListener("contextmenu", (e) => e.preventDefault());
+        this.html.addEventListener("mousedown", (event) => this.onMouseDown(event, grid));
+        this.html.addEventListener('mouseup', e => this.onMouseUp(e, grid));
+        this.html.addEventListener("mouseover", (e) => this.onMouseOver(e, grid));
+        this._position = new NodePosition(x, y);
+        this.changeType(NodeType.default);
     }
     changeType(newNodeType) {
-        if (this._color) {
-            this._root.classList.remove(String(this._color));
-        }
-        this._color = getNodeColor(newNodeType);
-        this._root.classList.add(String(this._color));
+        if (this._color)
+            this.html.classList.remove(this._color);
+        this._color = String(getNodeColor(newNodeType));
+        this.html.classList.add(this._color);
     }
-    getPosition() {
-        return this._pos;
+    onMouseOver(e, grid) {
+        if (grid.start() && grid.end()) {
+            grid.mouseOver(e, this._position);
+        }
+    }
+    onMouseDown(event, grid) {
+        if (this.isDefault() && !grid.start()) {
+            grid.setStart(this._position);
+        }
+        else if (this.isDefault() && !grid.end()) {
+            grid.setEnd(this._position);
+        }
+        else if (this.isDefault() && grid.start && grid.end) {
+            grid.selectMode = true;
+            grid.setBarrier(this._position);
+        }
+        else if (grid.start() && grid.end() && this.isEnd()) {
+            grid.unsetEnd();
+        }
+        else if (this.isStart() && grid.start && grid.end) {
+            grid.unsetStart();
+            grid.unsetEnd();
+        }
+    }
+    onMouseUp(event, grid) {
+        grid.selectMode = false;
     }
 }
 export class NodePosition {
@@ -32,49 +64,32 @@ export class NodePosition {
         this.y = y;
     }
 }
-export class NodeColor {
-    constructor(red, green, blue) {
-        if (red > 255 || red < 0)
-            throw new Error('Invalid Red Value');
-        if (green > 255 || green < 0)
-            throw new Error('Invalid Green Value');
-        if (blue > 255 || blue < 0)
-            throw new Error('Invalid Blue Value');
-        this.r = red;
-        this.b = blue;
-        this.g = green;
-    }
-}
-NodeColor.closed = new NodeColor(255, 0, 0);
-NodeColor.open = new NodeColor(0, 255, 0);
-NodeColor.barrier = new NodeColor(0, 0, 0);
-NodeColor.start = new NodeColor(255, 165, 0);
-NodeColor.end = new NodeColor(64, 224, 208);
-NodeColor.path = new NodeColor(64, 224, 208);
-NodeColor.border = new NodeColor(128, 128, 128);
 export const colors = {
-    red: [255, 0, 0],
-    green: [0, 255, 0],
-    blue: [0, 255, 0],
-    yellow: [255, 255, 0],
-    white: [255, 255, 255],
-    black: [0, 0, 0],
-    purple: [128, 0, 128],
-    orange: [255, 165, 0],
-    grey: [128, 128, 128],
-    turquoise: [64, 224, 208]
+    red: "red",
+    green: "green",
+    blue: "blue",
+    yellow: "yellow",
+    white: "white",
+    black: "black",
+    purple: "purple",
+    orange: "orange",
+    grey: "gray",
+    turquoise: "turquoise",
 };
 export var NodeType;
 (function (NodeType) {
-    NodeType[NodeType["closed"] = 0] = "closed";
-    NodeType[NodeType["open"] = 1] = "open";
-    NodeType[NodeType["start"] = 2] = "start";
-    NodeType[NodeType["end"] = 3] = "end";
-    NodeType[NodeType["barrier"] = 4] = "barrier";
-    NodeType[NodeType["path"] = 5] = "path";
+    NodeType[NodeType["default"] = 0] = "default";
+    NodeType[NodeType["closed"] = 1] = "closed";
+    NodeType[NodeType["open"] = 2] = "open";
+    NodeType[NodeType["start"] = 3] = "start";
+    NodeType[NodeType["end"] = 4] = "end";
+    NodeType[NodeType["barrier"] = 5] = "barrier";
+    NodeType[NodeType["path"] = 6] = "path";
 })(NodeType || (NodeType = {}));
 export function getNodeColor(type) {
     switch (type) {
+        case NodeType.default:
+            return colors.white;
         case NodeType.start:
             return colors.orange;
         case NodeType.end:
@@ -88,6 +103,6 @@ export function getNodeColor(type) {
         case NodeType.path:
             return colors.purple;
         default:
-            throw new Error('Invalid Node Type');
+            throw new Error("Invalid Node Type");
     }
 }

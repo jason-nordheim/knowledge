@@ -1,23 +1,75 @@
-import { Node } from './node'
+import { Node, NodePosition, NodeType } from './node'
 
 export default class Grid {
-    public root: HTMLElement; 
     private _nodes = new Array<Node[]>(); 
     private _rows: number; 
+    private _root: HTMLElement = null; 
+    private _start: NodePosition = null; 
+    private _end: NodePosition = null; 
 
+    public selectMode = false; 
 
     constructor(root:HTMLElement, rows:number){ 
-        this.root = root; 
-        this.root.classList.add('grid')
         this._rows = rows; 
+
+        this._root = root; 
+        this._root.classList.add('grid')
 
         // make grid 
         for(let i = 0; i < this._rows; i++){
             this._nodes.push(new Array<Node>())
             for(let j = 0; j < this._rows; j++){
                 const node = new Node(this, i, j); 
+                this._root.appendChild(node.html)
                 this._nodes[i].push(node) 
             }
         }; 
     }
+
+    
+
+
+    mouseOver(e:Event, pos:NodePosition) {
+        const node = this._nodes[pos.x][pos.y]
+       if (this.selectMode && node.isDefault()) {
+           node.changeType(NodeType.barrier)
+       } else if (this.selectMode && node.isBarrier()){
+           node.changeType(NodeType.default)
+       }
+    }
+
+    setBarrier(pos:NodePosition){
+        this._nodes[pos.x][pos.y].changeType(NodeType.barrier)
+    }
+    unsetBarrier(pos:NodePosition){
+        this._nodes[pos.x][pos.y].changeType(NodeType.default)
+    }
+
+
+
+    start = () => this._start
+    setStart(position:NodePosition){
+        this._start = position; 
+        this._nodes[this._start.x][this._start.y].changeType(NodeType.start)
+        console.log(this._start);
+    }
+    unsetStart(){
+        this._nodes[this._start.x][this._start.y].changeType(NodeType.default)
+        this._start = null
+    } 
+
+
+
+    end = () => this._end; 
+    setEnd(position:NodePosition){
+        this._end = position; 
+        this._nodes[this._end.x][this._end.y].changeType(NodeType.end)
+        console.log(this._end);
+    }
+    unsetEnd(){
+        this._nodes[this._end.x][this._end.y].changeType(NodeType.default)
+        this._end = null
+    } 
+
+
 }
