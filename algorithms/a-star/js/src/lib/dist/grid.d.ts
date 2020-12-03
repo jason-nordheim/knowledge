@@ -5,7 +5,7 @@ export default class Grid {
     private _root;
     private _start;
     private _end;
-    private _run;
+    private _running;
     selectMode: boolean;
     constructor(root: HTMLElement, rows: number);
     setRunning(): void;

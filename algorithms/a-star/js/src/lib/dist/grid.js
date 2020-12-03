@@ -1,11 +1,11 @@
-import { Node, NodeType } from './node.js';
+import { Node, NodeType } from './node';
 export default class Grid {
     constructor(root, rows) {
         this._nodes = new Array();
         this._root = null;
         this._start = null;
         this._end = null;
-        this._run = false;
+        this._running = false;
         this.selectMode = false;
         this.start = () => this._start;
         this.end = () => this._end;
@@ -23,10 +23,10 @@ export default class Grid {
         ;
     }
     setRunning() {
-        this._run = true;
+        this._running = true;
     }
     mouseOver(e, pos) {
-        if (this._run)
+        if (this._running)
             return;
         const node = this._nodes[pos.x][pos.y];
         if (this.selectMode && node.isDefault()) {
@@ -37,37 +37,37 @@ export default class Grid {
         }
     }
     setBarrier(pos) {
-        if (this._run)
+        if (this._running)
             return;
         this._nodes[pos.x][pos.y].changeType(NodeType.barrier);
     }
     unsetBarrier(pos) {
-        if (this._run)
+        if (this._running)
             return;
         this._nodes[pos.x][pos.y].changeType(NodeType.default);
     }
     setStart(position) {
-        if (this._run)
+        if (this._running)
             return;
         this._start = position;
         this._nodes[this._start.x][this._start.y].changeType(NodeType.start);
         console.log(this._start);
     }
     unsetStart() {
-        if (this._run)
+        if (this._running)
             return;
         this._nodes[this._start.x][this._start.y].changeType(NodeType.default);
         this._start = null;
     }
     setEnd(position) {
-        if (this._run)
+        if (this._running)
             return;
         this._end = position;
         this._nodes[this._end.x][this._end.y].changeType(NodeType.end);
         console.log(this._end);
     }
     unsetEnd() {
-        if (this._run)
+        if (this._running)
             return;
         this._nodes[this._end.x][this._end.y].changeType(NodeType.default);
         this._end = null;
