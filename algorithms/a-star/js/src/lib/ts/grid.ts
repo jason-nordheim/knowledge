@@ -58,7 +58,6 @@ export default class Grid {
         if (this._running) return 
         this._start = position; 
         this._nodes[this._start.x][this._start.y].changeType(NodeType.start)
-        console.log(this._start);
     }
     unsetStart(){
         if (this._running) return 
@@ -73,7 +72,6 @@ export default class Grid {
         if (this._running) return 
         this._end = position; 
         this._nodes[this._end.x][this._end.y].changeType(NodeType.end)
-        console.log(this._end);
     }
     unsetEnd(){
         if (this._running) return 
