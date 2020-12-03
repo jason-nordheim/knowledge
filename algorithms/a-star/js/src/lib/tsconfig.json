@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ES2015",
+    "lib": [
+      "DOM",
+      "ES2015"
+    ],
+    "moduleResolution": "node",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "./ts",
+    "outDir": "./dist",
+    //"baseUrl": "./",
+      // Ensure that .d.ts files are created by tsc, but not .js files
+    "declaration": true,
+    //"emitDeclarationOnly": true,
+    // Ensure that Babel can safely transpile files in the TypeScript project
+    "isolatedModules": true
+  }
+}
