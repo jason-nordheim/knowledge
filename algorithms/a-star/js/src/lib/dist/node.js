@@ -16,8 +16,8 @@ export class Node {
         this._grid = grid;
         this.html = document.createElement("div");
         this.html.classList.add("node");
+        this.html.addEventListener('contextmenu', (e) => e.preventDefault());
         this.html.addEventListener("drag", (e) => e.preventDefault());
-        this.html.addEventListener("contextmenu", (e) => e.preventDefault());
         this.html.addEventListener("mousedown", (event) => this.onMouseDown(event, grid));
         this.html.addEventListener('mouseup', e => this.onMouseUp(e, grid));
         this.html.addEventListener("mouseover", (e) => this.onMouseOver(e, grid));
@@ -32,26 +32,31 @@ export class Node {
     }
     onMouseOver(e, grid) {
         if (grid.start() && grid.end()) {
-            grid.mouseOver(e, this._position);
+            grid.onMouseOverNode(e, this._position);
         }
     }
-    onMouseDown(event, grid) {
-        if (this.isDefault() && !grid.start()) {
-            grid.setStart(this._position);
+    onMouseDown(e, grid) {
+        if (e.buttons === 1) {
+            if (this.isDefault() && !grid.start()) {
+                grid.setStart(this._position);
+            }
+            else if (this.isDefault() && !grid.end()) {
+                grid.setEnd(this._position);
+            }
+            else if (this.isDefault() && grid.start && grid.end) {
+                grid.selectMode = true;
+                grid.setBarrier(this._position);
+            }
+            else if (grid.start() && grid.end() && this.isEnd()) {
+                grid.unsetEnd();
+            }
+            else if (this.isStart() && grid.start && grid.end) {
+                grid.unsetStart();
+                grid.unsetEnd();
+            }
         }
-        else if (this.isDefault() && !grid.end()) {
-            grid.setEnd(this._position);
-        }
-        else if (this.isDefault() && grid.start && grid.end) {
-            grid.selectMode = true;
-            grid.setBarrier(this._position);
-        }
-        else if (grid.start() && grid.end() && this.isEnd()) {
-            grid.unsetEnd();
-        }
-        else if (this.isStart() && grid.start && grid.end) {
-            grid.unsetStart();
-            grid.unsetEnd();
+        else {
+            grid.onContextMenuNode(e, this._position);
         }
     }
     onMouseUp(event, grid) {
