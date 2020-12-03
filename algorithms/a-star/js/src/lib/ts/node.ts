@@ -86,6 +86,13 @@ export class Node {
   private onMouseUp(event:MouseEvent, grid:Grid) {
       grid.selectMode = false; 
   }
+
+  static hDistance(n1:Node, n2:Node){
+    const pos1 = n1.getPosition()
+    const pos2 = n2.getPosition() 
+    return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y)
+  }
+
 }
 
 

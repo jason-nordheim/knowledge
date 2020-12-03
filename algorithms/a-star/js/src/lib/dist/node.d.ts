@@ -18,6 +18,7 @@ export declare class Node {
     private onMouseOver;
     private onMouseDown;
     private onMouseUp;
+    static hDistance(n1: Node, n2: Node): number;
 }
 export declare class NodePosition {
     x: number;
