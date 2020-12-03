@@ -1,4 +1,4 @@
-import { Node, NodeType } from './node';
+import { Node, NodeType } from './node.js';
 export default class Grid {
     constructor(root, rows) {
         this._nodes = new Array();
@@ -7,6 +7,7 @@ export default class Grid {
         this._end = null;
         this._running = false;
         this.selectMode = false;
+        this.isRunning = () => this._running;
         this.start = () => this._start;
         this.end = () => this._end;
         this._rows = rows;
@@ -25,7 +26,10 @@ export default class Grid {
     setRunning() {
         this._running = true;
     }
-    mouseOver(e, pos) {
+    onContextMenuNode(e, pos) {
+        console.log(e);
+    }
+    onMouseOverNode(e, pos) {
         if (this._running)
             return;
         const node = this._nodes[pos.x][pos.y];

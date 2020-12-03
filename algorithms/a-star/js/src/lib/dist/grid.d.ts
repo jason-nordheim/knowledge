@@ -8,8 +8,10 @@ export default class Grid {
     private _running;
     selectMode: boolean;
     constructor(root: HTMLElement, rows: number);
+    isRunning: () => boolean;
     setRunning(): void;
-    mouseOver(e: Event, pos: NodePosition): void;
+    onContextMenuNode(e: Event, pos: NodePosition): void;
+    onMouseOverNode(e: Event, pos: NodePosition): void;
     setBarrier(pos: NodePosition): void;
     unsetBarrier(pos: NodePosition): void;
     start: () => NodePosition;

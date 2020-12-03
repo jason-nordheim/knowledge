@@ -27,12 +27,17 @@ export default class Grid {
         }; 
     }
 
+    public isRunning = () => this._running; 
+
     setRunning(){
         this._running = true; 
     }
 
+    onContextMenuNode(e:Event, pos:NodePosition){
+        console.log(e)
+    }
 
-    mouseOver(e:Event, pos:NodePosition) {
+    onMouseOverNode(e:Event, pos:NodePosition) {
         if (this._running) return 
         const node = this._nodes[pos.x][pos.y]
        if (this.selectMode && node.isDefault()) {
