@@ -6,6 +6,7 @@ export default class Grid {
     private _root: HTMLElement = null; 
     private _start: NodePosition = null; 
     private _end: NodePosition = null; 
+    private _run: boolean = false; 
 
     public selectMode = false; 
 
@@ -26,10 +27,13 @@ export default class Grid {
         }; 
     }
 
-    
+    setRunning(){
+        this._run = true; 
+    }
 
 
     mouseOver(e:Event, pos:NodePosition) {
+        if (this._run) return 
         const node = this._nodes[pos.x][pos.y]
        if (this.selectMode && node.isDefault()) {
            node.changeType(NodeType.barrier)
@@ -39,9 +43,11 @@ export default class Grid {
     }
 
     setBarrier(pos:NodePosition){
+        if (this._run) return    
         this._nodes[pos.x][pos.y].changeType(NodeType.barrier)
     }
     unsetBarrier(pos:NodePosition){
+        if (this._run) return 
         this._nodes[pos.x][pos.y].changeType(NodeType.default)
     }
 
@@ -49,11 +55,13 @@ export default class Grid {
 
     start = () => this._start
     setStart(position:NodePosition){
+        if (this._run) return 
         this._start = position; 
         this._nodes[this._start.x][this._start.y].changeType(NodeType.start)
         console.log(this._start);
     }
     unsetStart(){
+        if (this._run) return 
         this._nodes[this._start.x][this._start.y].changeType(NodeType.default)
         this._start = null
     } 
@@ -62,11 +70,13 @@ export default class Grid {
 
     end = () => this._end; 
     setEnd(position:NodePosition){
+        if (this._run) return 
         this._end = position; 
         this._nodes[this._end.x][this._end.y].changeType(NodeType.end)
         console.log(this._end);
     }
     unsetEnd(){
+        if (this._run) return 
         this._nodes[this._end.x][this._end.y].changeType(NodeType.default)
         this._end = null
     } 

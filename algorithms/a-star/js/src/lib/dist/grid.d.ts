@@ -5,8 +5,10 @@ export default class Grid {
     private _root;
     private _start;
     private _end;
+    private _run;
     selectMode: boolean;
     constructor(root: HTMLElement, rows: number);
+    setRunning(): void;
     mouseOver(e: Event, pos: NodePosition): void;
     setBarrier(pos: NodePosition): void;
     unsetBarrier(pos: NodePosition): void;
