@@ -1,4 +1,4 @@
-import { Node, NodeType } from './node.js';
+import { Node, NodeType } from './node';
 export default class Grid {
     constructor(root, rows) {
         this._nodes = new Array();
@@ -23,8 +23,37 @@ export default class Grid {
         }
         ;
     }
-    setRunning() {
+    run() {
         this._running = true;
+        this.updateNeighbors();
+    }
+    updateNeighbors() {
+        for (let x = 0; x < this._rows; x++) {
+            for (let y = 0; y < this._rows; y++) {
+                const node = this._nodes[x][y];
+                const neighbors = new Array();
+                if (x + 1 < this._rows - 1) {
+                    const downNode = this._nodes[x + 1][y];
+                    neighbors.push(downNode);
+                }
+                if (x - 1 > 0) {
+                    const upNode = this._nodes[x - 1][y];
+                    neighbors.push(upNode);
+                }
+                if (y + 1 < this._rows - 1) {
+                    const rightNode = this._nodes[x][y + 1];
+                    neighbors.push(rightNode);
+                }
+                if (y - 1 > 0) {
+                    const leftNode = this._nodes[x][y - 1];
+                    neighbors.push(leftNode);
+                }
+                node.neighbors = neighbors;
+            }
+        }
+    }
+    getNode(x, y) {
+        return this._nodes[x][y];
     }
     onContextMenuNode(e, pos) {
         console.log(e);

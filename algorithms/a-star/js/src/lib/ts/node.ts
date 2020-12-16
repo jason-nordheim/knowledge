@@ -1,6 +1,7 @@
 import Grid from "./grid";
 
 export class Node {
+  
   private _position: NodePosition = null;
   private _grid: Grid = null;
   private _color: string = null;
@@ -9,7 +10,7 @@ export class Node {
   public neighbors = new Array<Node>();
 
   constructor(grid: Grid, x: number, y: number) {
-    this._grid = grid;
+    this.setGrid(grid)
 
     this.html = document.createElement("div");
     this.html.classList.add("node");
@@ -41,29 +42,16 @@ export class Node {
     this.html.classList.add(this._color);
   }
 
+  private setGrid(grid: Grid){
+    this._grid = grid; 
+  }
 
   private onMouseOver(e: Event, grid: Grid) {
     if (grid.start() && grid.end()) {
       grid.onMouseOverNode(e, this._position);
     }
   }
-//   private onMouseDown(event: MouseEvent, grid: Grid) {
-//     if (this.isDefault() && !grid.start()) {
-//       grid.setStart(this._position);
-//     } else if (this.isDefault() && !grid.end()) {
-//       grid.setEnd(this._position);
-//     } else if (this.isDefault() && grid.start && grid.end) {
-//       grid.setBarrier(this._position);
-//     } else if (this.isBarrier() && grid.start && grid.end) {
-//       grid.unsetBarrier(this._position);
-//     } else if (this.isEnd()) {
-//       grid.unsetEnd();
-//     } else if (this.isStart() && grid.start && grid.end) {
-//       grid.unsetStart();
-//       grid.unsetEnd();
-//     }
-//   }
-// }
+
 
   private onMouseDown(e: MouseEvent, grid: Grid) {
     if(e.buttons === 1 ){
@@ -85,6 +73,8 @@ export class Node {
       grid.onContextMenuNode(e, this._position)
     }
   }
+
+
   private onMouseUp(event:MouseEvent, grid:Grid) {
       grid.selectMode = false; 
   }

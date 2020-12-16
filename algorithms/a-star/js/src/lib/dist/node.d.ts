@@ -15,6 +15,7 @@ export declare class Node {
     isEnd: () => boolean;
     getPosition: () => NodePosition;
     changeType(newNodeType: NodeType): void;
+    private setGrid;
     private onMouseOver;
     private onMouseDown;
     private onMouseUp;

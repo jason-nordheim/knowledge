@@ -1,4 +1,4 @@
-import { NodePosition } from './node';
+import { Node, NodePosition } from './node';
 export default class Grid {
     private _nodes;
     private _rows;
@@ -9,7 +9,9 @@ export default class Grid {
     selectMode: boolean;
     constructor(root: HTMLElement, rows: number);
     isRunning: () => boolean;
-    setRunning(): void;
+    run(): void;
+    updateNeighbors(): void;
+    getNode(x: number, y: number): Node;
     onContextMenuNode(e: Event, pos: NodePosition): void;
     onMouseOverNode(e: Event, pos: NodePosition): void;
     setBarrier(pos: NodePosition): void;

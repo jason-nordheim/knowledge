@@ -1,6 +1,7 @@
 import { Node, NodePosition, NodeType } from './node'
 
 export default class Grid {
+   
     private _nodes = new Array<Node[]>(); 
     private _rows: number; 
     private _root: HTMLElement = null; 
@@ -27,11 +28,48 @@ export default class Grid {
         }; 
     }
 
-    public isRunning = () => this._running; 
 
-    setRunning(){
+
+    public isRunning = () => this._running; 
+    public run(){
         this._running = true; 
+        this.updateNeighbors() 
     }
+
+    public updateNeighbors() {
+        // make grid 
+        for(let x = 0; x < this._rows; x++){
+            for(let y = 0; y < this._rows; y++){
+                const node = this._nodes[x][y]
+                const neighbors = new Array<Node>() ; 
+                // down 
+                if(x + 1 < this._rows - 1){
+                    const downNode = this._nodes[x+1][y]
+                    neighbors.push(downNode)
+                }
+                // up 
+                if(x - 1 > 0){
+                    const upNode = this._nodes[x-1][y]
+                    neighbors.push(upNode)
+                }
+                // right 
+                if(y + 1 < this._rows - 1){
+                    const rightNode = this._nodes[x][y + 1]
+                    neighbors.push(rightNode)
+                }
+                // left 
+                if(y - 1 > 0) {
+                    const leftNode = this._nodes[x][y - 1]
+                    neighbors.push(leftNode)
+                }
+                node.neighbors = neighbors; 
+            }
+        }
+    }
+
+    public getNode(x: number, y: number) {
+        return this._nodes[x][y]
+      }
 
     onContextMenuNode(e:Event, pos:NodePosition){
         console.log(e)

@@ -13,7 +13,7 @@ export class Node {
         this.isStart = () => this._color === String(getNodeColor(NodeType.start));
         this.isEnd = () => this._color === String(getNodeColor(NodeType.end));
         this.getPosition = () => this._position;
-        this._grid = grid;
+        this.setGrid(grid);
         this.html = document.createElement("div");
         this.html.classList.add("node");
         this.html.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -29,6 +29,9 @@ export class Node {
             this.html.classList.remove(this._color);
         this._color = String(getNodeColor(newNodeType));
         this.html.classList.add(this._color);
+    }
+    setGrid(grid) {
+        this._grid = grid;
     }
     onMouseOver(e, grid) {
         if (grid.start() && grid.end()) {
